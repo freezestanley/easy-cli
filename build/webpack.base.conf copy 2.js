@@ -18,12 +18,12 @@ const glob = require('glob-all')
 const env = require('./env')
 const config = new Config()
 
+console.log(env.isDev)
 // entry output 
 config
   .entry('index')
     .add('./src/index.js')
     .end()
-  .mode('production')
   .output
     .path(path.resolve(__dirname, '../dist'))
     .filename('[name].[hash:8].js')
@@ -31,8 +31,6 @@ config
     .library('other')
     .libraryTarget('umd')
 
-// devtool
-config => config.devtool('cheap-module-eval-source-map')
 
 // extensions
 const fileType = ['.ts', '.tsx', '.js', '.json', '.vue', '.jsx']
@@ -40,10 +38,8 @@ const fileType = ['.ts', '.tsx', '.js', '.json', '.vue', '.jsx']
     config.resolve.extensions.add(ele)
   })
 config.resolve.extensions.end()
-
 // alias
 config.resolve.alias.set('react-native','react-native-web')
-
 // externals
 config.externals({
   'react': 'react',
@@ -144,128 +140,103 @@ config.module.rule('images')
     name: '../dist/images/[name].[hash:8].[ext]',
   }).end()
 
+config.mode(env.isDev ? env.DEVELOPMENT : env.PRODUCTION)
+config.devtool(env.isDev ? 'cheap-module-eval-source-map' : 'source-map')
 
 // plugin
 config  
-  .plugin('progress')
-    .use(webpack.ProgressPlugin).end()
-  .plugin('IgnorePlugin')
-    .use(webpack.IgnorePlugin, [/^\.\/locale$/, /moment$/]).end()
-  .plugin('htmlwebpackplugin')
-    .use(HtmlWebpackPlugin, [
-      Object.assign(
-        {},
-        {
-          inject: true,
-          template: path.resolve(__dirname, '../index.html')
-        },
-        {
-          minify: {
-            removeComments: true,
-            collapseWhitespace: true,
-            removeRedundantAttributes: true,
-            useShortDoctype: true,
-            removeEmptyAttributes: true,
-            removeStyleLinkTypeAttributes: true,
-            keepClosingSlash: true,
-            minifyJS: true,
-            minifyCSS: true,
-            minifyURLs: true,
-          }
+.plugin('progress')
+  .use(webpack.ProgressPlugin).end()
+.plugin('htmlwebpackplugin')
+  .use(HtmlWebpackPlugin, [
+    Object.assign(
+      {},
+      {
+        inject: true,
+        template: path.resolve(__dirname, '../index.html')
+      },
+      env.isDev ?
+      {
+        minify: {
+          removeComments: true,
+          collapseWhitespace: true,
+          removeRedundantAttributes: true,
+          useShortDoctype: true,
+          removeEmptyAttributes: true,
+          removeStyleLinkTypeAttributes: true,
+          keepClosingSlash: true,
+          minifyJS: true,
+          minifyCSS: true,
+          minifyURLs: true,
         }
-      )
-    ]).end()
-  .plugin('PreloadWebpackPlugin')
-    .use(PreloadWebpackPlugin, [{
-      rel: 'preload',
-      as: 'script'
-    }]).end()
-  .plugin('ScriptExtHtmlWebpackPlugin')
-    .use(ScriptExtHtmlWebpackPlugin, [{
-      preload: /\.js$/,
-      defaultAttribute: 'defer'
-    }]).end()
-  .plugin('HardSourceWebpackPlugin')
-    .use(HardSourceWebpackPlugin).end()
-  .plugin('ModuleConcatenationPlugin')
-    .use(webpack.optimize.ModuleConcatenationPlugin).end()
-  .plugin('HashedModule')
-    .use(webpack.HashedModuleIdsPlugin).end()
-  .plugin('Compression')
+      } : {}
+    )
+  ]).end()
+.plugin('PreloadWebpackPlugin')
+  .use(PreloadWebpackPlugin, [{
+    rel: 'preload',
+    as: 'script'
+  }]).end()
+.plugin('ScriptExtHtmlWebpackPlugin')
+  .use(ScriptExtHtmlWebpackPlugin, [{
+    preload: /\.js$/,
+    defaultAttribute: 'defer'
+  }]).end()
+.plugin('HardSourceWebpackPlugin')
+  .use(HardSourceWebpackPlugin).end()
+.plugin('ModuleConcatenationPlugin')
+  .use(webpack.optimize.ModuleConcatenationPlugin).end()
+.plugin('HashedModule')
+  .use(webpack.HashedModuleIdsPlugin).end()
+.plugin('DefinePlugin')
+  .use(webpack.DefinePlugin, [{
+    // 'process.env.ASSET_PATH': JSON.stringify(ASSET_PATH)
+  }]).end()
+.plugin('PurifyCSS')
+  .use(PurifyCSS, [{
+    paths: glob.sync([
+      path.resolve(__dirname, '../src/*.js')
+    ])
+  }]).end()
+.plugin('MiniCssExtractPlugin')
+  .use(MiniCssExtractPlugin, [{
+    filename: "[name].[contenthash:8].css",
+    chunkFilename: "[name].[contenthash:8].css"
+}]).end()
+.plugin('OptimizeCssAssetsPlugin')
+  .use(OptimizeCssAssetsPlugin, [{ cssProcessorOptions: { safe: true } }]).end()
+.plugin('NamedModulesPlugin')
+  .use(webpack.NamedModulesPlugin).end()
+.plugin('clean')
+  .use(CleanWebpackPlugin).end()
+
+config.when(env.isDev, config => {
+  config.plugin('HotModuleReplacementPlugin')
+  .use(webpack.HotModuleReplacementPlugin).end()
+  
+  // devServer
+  config.devServer.contentBase('../dist')
+    .port(8080)
+    .inline(true)
+    .historyApiFallback(true)
+    .hot(true)
+    .compress(true)
+})
+
+config.when(env.isPrd, config => {
+  config.plugin('Compression')
     .use(CompressionPlugin, [{
       algorithm: 'gzip',
       threshold: 10240,
       minRatio: 0.7
     }]).end()
-  .plugin('DefinePlugin')
-    .use(webpack.DefinePlugin, [{
-      'process.env.ASSET_PATH': JSON.stringify(ASSET_PATH)
-    }]).end()
-  .plugin('PurifyCSS')
-    .use(PurifyCSS, [{
-      paths: glob.sync([
-        path.resolve(__dirname, '../src/*.js')
-      ])
-    }]).end()
-  .plugin('MiniCssExtractPlugin')
-    .use(MiniCssExtractPlugin, [{
-      filename: "[name].[contenthash:8].css",
-      chunkFilename: "[name].[contenthash:8].css"
-  }]).end()
-  .plugin('OptimizeCssAssetsPlugin')
-    .use(OptimizeCssAssetsPlugin, [{ cssProcessorOptions: { safe: true } }]).end()
-  .plugin('NamedModulesPlugin')
-    .use(webpack.NamedModulesPlugin).end()
-  .plugin('HotModuleReplacementPlugin')
-    .use(webpack.HotModuleReplacementPlugin).end()
-  .plugin('clean')
-    .use(CleanWebpackPlugin).end()
-  .plugin('BundleAnalyzerPlugin')
+  config.plugin('IgnorePlugin')
+    .use(webpack.IgnorePlugin, [/^\.\/locale$/, /moment$/]).end()
+  config.plugin('BundleAnalyzerPlugin')
     .use(BundleAnalyzerPlugin)
     .end()
-
-// devServer
-config.devServer.contentBase('../dist')
-  .port(8080)
-  .inline(true)
-  .historyApiFallback(true)
-  .hot(true)
-  .compress(true)
-
-
-
-
-config.when(
-  env.isPrd,
-  config => {
-    config.devtool('source-map')
-    config.optimization.minimize(true)
-    .minimizer('OptimizeCssAssetsPlugin')
-    .use(OptimizeCssAssetsPlugin, [{ cssProcessorOptions: { safe: true } }])
-    .end()
-    .minimizer('TerserPlugin')
-    .use(TerserPlugin)
-    .end()
-    .namedChunks(true)
-    .runtimeChunk({name: 'runtime'})
-    .splitChunks({
-      minSize: 3000,
-      minChunks: 1,
-      maxAsyncRequests: 5,
-      maxInitialRequests: 3,
-      name: false,
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendor',
-          chunks: 'initial',
-          reuseExistingChunk: true
-        }
-      }
-    })
-    .removeEmptyChunks(true)
-  }
-)
+})
 
 const result = config.toString()
+console.log(result)
 module.exports = merge({}, config.toConfig())
