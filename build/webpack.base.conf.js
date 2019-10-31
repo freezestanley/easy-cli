@@ -23,7 +23,6 @@ config
   .entry('index')
     .add('./src/index.js')
     .end()
-  .mode('production')
   .output
     .path(path.resolve(__dirname, '../dist'))
     .filename('[name].[hash:8].js')
@@ -31,8 +30,7 @@ config
     .library('other')
     .libraryTarget('umd')
 
-// devtool
-config => config.devtool('cheap-module-eval-source-map')
+
 
 // extensions
 const fileType = ['.ts', '.tsx', '.js', '.json', '.vue', '.jsx']
@@ -46,11 +44,11 @@ config.resolve.alias.set('react-native','react-native-web')
 
 // externals
 config.externals({
-  'react': 'react',
-  'react-dom': 'ReactDOM',
-  'react-router-dom': 'reactRouterDom',
-  'vue': 'vue',
-  'vue-router': 'vueRouter',
+//   'react': 'react',
+//   'react-dom': 'ReactDOM',
+//   'react-router-dom': 'reactRouterDom',
+//   'vue': 'vue',
+//   'vue-router': 'vueRouter',
 })
 
 // module
@@ -72,17 +70,17 @@ config.module.rule('compile')
 
 config.module.rule('less')
   .test(/\.less$/)
-  .use('mini')
-  .loader(MiniCssExtractPlugin.loader).options({
-    hmr: process.env.NODE_ENV === 'development',
-    fallback: {
-      loader: require.resolve('style-loader'),
-      options: {
-        singleton: true
-      }
-    }
-  })
-  .end()
+//   .use('mini')
+//   .loader(MiniCssExtractPlugin.loader).options({
+//     hmr: env.isDev,
+//     fallback: {
+//       loader: require.resolve('style-loader'),
+//       options: {
+//         singleton: true
+//       }
+//     }
+//   })
+//   .end()
   .use('css')
   .loader('css-loader')
   .end()
@@ -107,16 +105,6 @@ config.module.rule('less')
 
 config.module.rule('sass')
   .test(/\.s[ac]ss$/i)
-  .use('mini')
-  .loader(MiniCssExtractPlugin.loader).options({
-    hmr: process.env.NODE_ENV === 'development',
-    fallback: {
-      loader: require.resolve('style-loader'),
-      options: {
-        singleton: true
-      }
-    }
-  }).end()
   .use('css')
   .loader('css-loader').end()
   .use('postcss')
@@ -144,128 +132,5 @@ config.module.rule('images')
     name: '../dist/images/[name].[hash:8].[ext]',
   }).end()
 
-
-// plugin
-config  
-  .plugin('progress')
-    .use(webpack.ProgressPlugin).end()
-  .plugin('IgnorePlugin')
-    .use(webpack.IgnorePlugin, [/^\.\/locale$/, /moment$/]).end()
-  .plugin('htmlwebpackplugin')
-    .use(HtmlWebpackPlugin, [
-      Object.assign(
-        {},
-        {
-          inject: true,
-          template: path.resolve(__dirname, '../index.html')
-        },
-        {
-          minify: {
-            removeComments: true,
-            collapseWhitespace: true,
-            removeRedundantAttributes: true,
-            useShortDoctype: true,
-            removeEmptyAttributes: true,
-            removeStyleLinkTypeAttributes: true,
-            keepClosingSlash: true,
-            minifyJS: true,
-            minifyCSS: true,
-            minifyURLs: true,
-          }
-        }
-      )
-    ]).end()
-  .plugin('PreloadWebpackPlugin')
-    .use(PreloadWebpackPlugin, [{
-      rel: 'preload',
-      as: 'script'
-    }]).end()
-  .plugin('ScriptExtHtmlWebpackPlugin')
-    .use(ScriptExtHtmlWebpackPlugin, [{
-      preload: /\.js$/,
-      defaultAttribute: 'defer'
-    }]).end()
-  .plugin('HardSourceWebpackPlugin')
-    .use(HardSourceWebpackPlugin).end()
-  .plugin('ModuleConcatenationPlugin')
-    .use(webpack.optimize.ModuleConcatenationPlugin).end()
-  .plugin('HashedModule')
-    .use(webpack.HashedModuleIdsPlugin).end()
-  .plugin('Compression')
-    .use(CompressionPlugin, [{
-      algorithm: 'gzip',
-      threshold: 10240,
-      minRatio: 0.7
-    }]).end()
-  .plugin('DefinePlugin')
-    .use(webpack.DefinePlugin, [{
-      'process.env.ASSET_PATH': JSON.stringify(ASSET_PATH)
-    }]).end()
-  .plugin('PurifyCSS')
-    .use(PurifyCSS, [{
-      paths: glob.sync([
-        path.resolve(__dirname, '../src/*.js')
-      ])
-    }]).end()
-  .plugin('MiniCssExtractPlugin')
-    .use(MiniCssExtractPlugin, [{
-      filename: "[name].[contenthash:8].css",
-      chunkFilename: "[name].[contenthash:8].css"
-  }]).end()
-  .plugin('OptimizeCssAssetsPlugin')
-    .use(OptimizeCssAssetsPlugin, [{ cssProcessorOptions: { safe: true } }]).end()
-  .plugin('NamedModulesPlugin')
-    .use(webpack.NamedModulesPlugin).end()
-  .plugin('HotModuleReplacementPlugin')
-    .use(webpack.HotModuleReplacementPlugin).end()
-  .plugin('clean')
-    .use(CleanWebpackPlugin).end()
-  .plugin('BundleAnalyzerPlugin')
-    .use(BundleAnalyzerPlugin)
-    .end()
-
-// devServer
-config.devServer.contentBase('../dist')
-  .port(8080)
-  .inline(true)
-  .historyApiFallback(true)
-  .hot(true)
-  .compress(true)
-
-
-
-
-config.when(
-  env.isPrd,
-  config => {
-    config.devtool('source-map')
-    config.optimization.minimize(true)
-    .minimizer('OptimizeCssAssetsPlugin')
-    .use(OptimizeCssAssetsPlugin, [{ cssProcessorOptions: { safe: true } }])
-    .end()
-    .minimizer('TerserPlugin')
-    .use(TerserPlugin)
-    .end()
-    .namedChunks(true)
-    .runtimeChunk({name: 'runtime'})
-    .splitChunks({
-      minSize: 3000,
-      minChunks: 1,
-      maxAsyncRequests: 5,
-      maxInitialRequests: 3,
-      name: false,
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendor',
-          chunks: 'initial',
-          reuseExistingChunk: true
-        }
-      }
-    })
-    .removeEmptyChunks(true)
-  }
-)
-
 const result = config.toString()
-module.exports = merge({}, config.toConfig())
+module.exports = config
