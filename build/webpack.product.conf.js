@@ -1,5 +1,4 @@
 'use strict'
-const Config = require('webpack-chain')
 const merge = require('webpack-merge')
 const webpack = require('webpack')
 const path = require('path')
@@ -118,6 +117,9 @@ config
     .use(webpack.NamedModulesPlugin).end()
   .plugin('clean')
     .use(CleanWebpackPlugin).end()
+  .plugin('BundleAnalyzerPlugin')
+    .use(BundleAnalyzerPlugin)
+    .end()
 
 // devtool
 config.devtool('source-map')
