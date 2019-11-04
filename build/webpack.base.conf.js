@@ -51,21 +51,38 @@ config.module.rule('compile')
       "@babel/plugin-transform-react-jsx-self"
     ]
   }).end()
+  .use('eslint-loader')
+  .loader('eslint-loader')
+  .options({
+    formatter: require('eslint-friendly-formatter')
+  }).end()
+
+
+// config.module.rule('eslint')
+//   .exclude.add(/(node_modules|bower_components)/).end()
+//   .include.add(path.resolve(__dirname,'../src')).end()
+//   .test(/\.js$/)
+//   .enforce('pre')
+//   .use('eslint-loader')
+//   .loader('eslint-loader')
+//   .options({
+//     formatter: require('eslint-friendly-formatter')
+//   }).end()
+
+
+config.module.rule('ts')
+  .exclude.add(/(node_modules|bower_components)/)
+  .end()
+  .include.add(path.resolve(__dirname,'../src')).end()
+  .test(/\.tsx?$/)
+  .use('ts-loader')
+  .loader('ts-loader').options({
+    happyPackMode: true
+  }).end()
 
 
 config.module.rule('less')
   .test(/\.less$/)
-//   .use('mini')
-//   .loader(MiniCssExtractPlugin.loader).options({
-//     hmr: env.isDev,
-//     fallback: {
-//       loader: require.resolve('style-loader'),
-//       options: {
-//         singleton: true
-//       }
-//     }
-//   })
-//   .end()
   .use('css')
   .loader('css-loader')
   .end()

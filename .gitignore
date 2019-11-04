@@ -5,3 +5,5 @@ dist
 .DS_Store
 */.DS_Store
 yarn.lock
+# eslint report
+report_*.xml
