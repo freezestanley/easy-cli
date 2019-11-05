@@ -96,10 +96,6 @@ config
       threshold: 10240,
       minRatio: 0.7
     }]).end()
-  .plugin('DefinePlugin')
-    .use(webpack.DefinePlugin, [{
-    
-    }]).end()
   .plugin('PurifyCSS')
     .use(PurifyCSS, [{
       paths: glob.sync([

@@ -132,5 +132,10 @@ config.module.rule('images')
     quality: 85,
     name: '../dist/images/[name].[hash:8].[ext]',
   }).end()
-
+  
+config.plugin('DefinePlugin')
+  .use(webpack.DefinePlugin, [
+  {
+    
+  }]).end()
 module.exports = config
