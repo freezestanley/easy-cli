@@ -15,12 +15,6 @@ function doit (answer, dir) {
     shell.echo('Sorry, this script requires git');
     shell.exit(1);
   }
-  // shell.exec('git clone https://github.com/freezestanley/electronDemo.git')
-  // console.log(chalk.blue('Hello world!'));
-  // console.log(__dirname)
-  // console.log(__filename)
-  // console.log(path.resolve("."))
-  // console.log(process.cwd())
   shell.exec(`cp -rf ${path.resolve(__dirname, '../packages/react/')} ${process.cwd()}/${dir}/`)
 }
 const create = (promptList, dir) => {
