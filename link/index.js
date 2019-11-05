@@ -21,19 +21,31 @@ function doit (answer, dir) {
   // console.log(__filename)
   // console.log(path.resolve("."))
   // console.log(process.cwd())
-  shell.exec(`cp -rf ${__dirname}/as/ ${process.cwd()}/${dir}/`)
+  shell.exec(`cp -rf ${path.resolve(__dirname, '../packages/react/')} ${process.cwd()}/${dir}/`)
 }
 const create = (promptList, dir) => {
   inquirer.prompt(promptList).then((answers) => {
+    console.log(answers)
     doit(answers, dir)
   })
 }
 
 program
-  .version(pk.version)
+  .command('rmdir <dir> [otherDirs...]')
+  .action(function (dir, otherDirs) {
+    console.log('rmdir %s', dir);
+    if (otherDirs) {
+      otherDirs.forEach(function (oDir) {
+        console.log('rmdir %s', oDir);
+      });
+    }
+  })
+  
+program
+  .version('0.1.0')
 
 program
-  .command('create <project>', '生成项目')
+  .command('create <project>')
   .action((dir, otherDirs) => {
     console.log('fasdfasdf')
     create([

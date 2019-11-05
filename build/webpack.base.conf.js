@@ -2,7 +2,6 @@
 const Config = require('webpack-chain')
 const path = require('path')
 const config = new Config()
-
 // entry output 
 config
   .entry('index')
@@ -58,16 +57,16 @@ config.module.rule('compile')
   }).end()
 
 
-// config.module.rule('eslint')
-//   .exclude.add(/(node_modules|bower_components)/).end()
-//   .include.add(path.resolve(__dirname,'../src')).end()
-//   .test(/\.js$/)
-//   .enforce('pre')
-//   .use('eslint-loader')
-//   .loader('eslint-loader')
-//   .options({
-//     formatter: require('eslint-friendly-formatter')
-//   }).end()
+config.module.rule('eslint')
+  .exclude.add(/(node_modules|bower_components)/).end()
+  .include.add(path.resolve(__dirname,'../src')).end()
+  .test(/\.js$/)
+  .enforce('pre')
+  .use('eslint-loader')
+  .loader('eslint-loader')
+  .options({
+    formatter: require('eslint-friendly-formatter')
+  }).end()
 
 
 config.module.rule('ts')
