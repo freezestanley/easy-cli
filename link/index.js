@@ -1,262 +1,68 @@
-var inquirer = require('inquirer')
+#!/usr/bin/env node 
+const command = require('commander');
+const program = new command.Command();
+const inquirer = require('inquirer')
+const shell = require('shelljs')
+const log = require("log")
+const chalk = require('chalk')
+const path = require('path')
+const step = require('./step')
+const aqa = path.resolve(__dirname,'../package.json')
+const pk = require(aqa)
 
-const first = {
-  type: 'list',
-  message: '请选择技术栈?',
-  name: 'type',
-  choices: [
-    {
-      key: "vue",
-      name: "vue",
-      value: "vue"
-    },
-    {
-      key: "react",
-      name: "react",
-      value: "react"
-    }
-  ]
-}
-
-const mft = {
-  type: 'confirm',
-  message: '是否为微前端项目？',
-  name: 'mft',
-  filter: function (val) { // 使用filter将回答变为小写
-      return val;
+function doit () {
+  if (!shell.which('git')) {
+    shell.echo('Sorry, this script requires git');
+    shell.exit(1);
   }
+  // shell.exec('git clone https://github.com/freezestanley/electronDemo.git')
+  // console.log(chalk.blue('Hello world!'));
+  // console.log(__dirname)
+  // console.log(__filename)
+  // console.log(path.resolve("."))
+  // console.log(process.cwd())
+  shell.exec(`cp -rf ${__dirname}/as ${process.cwd()}`)
 }
-const vue1 = {
-  type: 'list',
-  message: '请选择项目预设?',
-  name: 'perset',
-  choices: [
-      {
-        key: "default",
-        name: "默认(vue+vuex+vue-router+babel+zarmUI+xflow)",
-        value: "default"
-      },
-      {
-        key: "select",
-        name: "自定义功能",
-        value: "select"
-      }
-  ],
-  filter: function (val) { // 使用filter将回答变为小写
-    return val
-  },
-  when: function (val) {
-    return val.type === 'vue'
-  }
+const create = (promptList) => {
+  inquirer.prompt(promptList).then((answers) => {
+    // log(answers)
+    doit(answers)
+  })
 }
 
-const vue2 = { // vue-2
-  type: 'checkbox',
-  message: '请选择所需要的功能?',
-  name: 'select',
-  choices: [
-    {
-      key: "vuex",
-      name: "vuex",
-      value: "vuex"
-    },
-    {
-      key: "router",
-      name: "router",
-      value: "router"
-    },
-    {
-      key: "typeScript",
-      name: "typeScript",
-      value: "typeScript"
-    },
-    {
-      key: "css",
-      name: "CSS Pre-processors",
-      value: "css"
-    },
-    {
-      key: "formatter",
-      name: "Linter / Formatter",
-      value: "formatter"
-    },
-    {
-      key: "zarm",
-      name: "ZarmUI",
-      value: "zarm"
-    },
-    {
-      key: "xflow",
-      name: "xflow",
-      value: "xflow"
-    }
-  ],
-  filter: function (val) { // 使用filter将回答变为小写
-    return val
-  },
-  when: function (val) {
-    return val.type === 'vue' && val.perset === 'select'
-  },
-  validate: function (val) {
-    return val.length <= 0 ? '请选择': true
-  }
-}
-
-const react1 = { // react-1
-  type: 'list',
-  message: '请选择项目预设?',
-  name: 'perset',
-  choices: [
-      {
-        key: "default",
-        name: "defult(react+redux+react-router-dom+babel+zarmUI+xflow)",
-        value: "default"
-      },
-      {
-        key: "select",
-        name: "Manually select features",
-        value: "select"
-      }
-  ],
-  filter: function (val) { // 使用filter将回答变为小写
-      return val
-  },
-  when: function (val) {
-    return val.type === 'react'
-  }
-}
-
-const react2 = {
-  type: 'checkbox',
-  message: '请选择项目预设?',
-  name: 'select',
-  choices: [
-    { 
-      key: "redux",
-      name: "redux",
-      value: "redux"
-    },
-    {
-      key: "router",
-      name: "react-router-dom",
-      value: "router"
-    },
-    {
-      key: "typeScript",
-      name: "typeScript",
-      value: "typeScript"
-    },
-    {
-      key: "css",
-      name: "CSS Pre-processors",
-      value: "css"
-    },
-    {
-      key: "formatter",
-      name: "Linter / Formatter",
-      value: "formatter"
-    },
-    {
-      key: "xflow",
-      name: "xflow",
-      value: "xflow"
-    }
-  ],
-  validate: function (val) {
-    return val.length <= 0 ? '请选择': true
-  },
-  filter: function (val) { // 使用filter将回答变为小写
-    return val
-  },
-  when: function (val) {
-    return val.type === 'react' && val.perset === 'select'
-  }
-}
-const promptList = [
-  first,
-  mft,
-  vue1,
-  vue2,
-  react1,
-  react2
-]
 
 
-inquirer.prompt(promptList).then((answers) => {
-  console.log(answers)
-})
+// program.parse(process.argv);
+// program.version(pk.version).option('-f, --foo', 'enable some foo')
+// program.on('--help', function(){
+//   console.log('');
+//   console.log('Examples:');
+//   console.log('  $ custom-help --help');
+//   console.log('  $ custom-help -h');
+// });
+// program.parse(process.argv);
+// console.log(`You ordered a pizza with  and `);
 
-// const step2 = () => 
-// inquirer.prompt([{
-//   type: 'confirm',
-//   message: '是否使用zarm-mobile ui',
-//   name: 'ui',
-//   filter: function (val) { // 使用filter将回答变为小写
-//       return val.toLowerCase();
-//   }
-// }]).then((answers) => {
-//   console.log(answers)
-//   step3()
-// })
+// program
+//   .requiredOption('-c, --cheese <type>', 'pizza must have cheese');
+program
+  .option('-f, --foo', 'enable some foo').action(function (dir, cmdObj) {
+    // console.log('remove ' + JSON.stringify(dir) + JSON.stringify(cmdObj))
+    create([
+      step.first,
+      step.mft,
+      step.vue1,
+      step.vue2,
+      step.react1,
+      step.react2])
+  })
 
-// const step3 = () => 
-// inquirer.prompt([{
-//   type: 'confirm',
-//   message: '是否为微前端项目',
-//   name: 'ui',
-//   filter: function (val) { // 使用filter将回答变为小写
-//       return val.toLowerCase();
-//   }
-// }]).then((answers) => {
-//   console.log(answers)
-// })
-
-// const step4 = () => 
-// inquirer.prompt([{
-//   type: 'confirm',
-//   message: '是否接入xflow',
-//   name: 'ui',
-//   filter: function (val) { // 使用filter将回答变为小写
-//       return val.toLowerCase();
-//   }
-// }]).then((answers) => {
-//   console.log(answers)
-// })
-
-
-// inquirer.prompt([ { 
-//   type: 'confirm', 
-//   name: 'test', 
-//   message: '欢迎使用easy-cli,请选择技术栈?', 
-//   default: true 
-// }]).then((answers) => { 
-//     console.log('结果为:')
-//     console.log(answers)}
-// )
-// inquirer.prompt([ { 
-//     type: 'input', 
-//     name: 'test', 
-//     message: 'Are you handsome?', 
-//     default: true 
-//   }]).then((answers) => { 
-//       console.log('结果为:')
-//       console.log(answers)}
-//   )
-
-// const promptList = [{
-//     type: 'list',
-//     message: '请选择一种水果:',
-//     name: 'fruit',
-//     choices: [
-//         "Apple",
-//         "Pear",
-//         "Banana"
-//     ],
-//     filter: function (val) { // 使用filter将回答变为小写
-//         return val.toLowerCase();
-//     }
-// }]
-// inquirer.prompt(promptList).then((answers) => {
-//     console.log('结果为:')
-//     console.log(answers)
-// })
+program.on('--help', function(){
+    console.log('');
+    console.log('Examples:');
+    console.log('  $ custom-help --help');
+    console.log('  $ custom-help -h');
+  })
+program.version(pk.version)
+program.parse(process.argv)
+// console.log(process.argv)
