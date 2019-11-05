@@ -10,7 +10,7 @@ const step = require('./step')
 const aqa = path.resolve(__dirname,'../package.json')
 const pk = require(aqa)
 
-function doit () {
+function doit (answer, dir) {
   if (!shell.which('git')) {
     shell.echo('Sorry, this script requires git');
     shell.exit(1);
@@ -21,48 +21,36 @@ function doit () {
   // console.log(__filename)
   // console.log(path.resolve("."))
   // console.log(process.cwd())
-  shell.exec(`cp -rf ${__dirname}/as ${process.cwd()}`)
+  shell.exec(`cp -rf ${__dirname}/as/ ${process.cwd()}/${dir}/`)
 }
-const create = (promptList) => {
+const create = (promptList, dir) => {
   inquirer.prompt(promptList).then((answers) => {
-    // log(answers)
-    doit(answers)
+    doit(answers, dir)
   })
 }
 
-
-
-// program.parse(process.argv);
-// program.version(pk.version).option('-f, --foo', 'enable some foo')
-// program.on('--help', function(){
-//   console.log('');
-//   console.log('Examples:');
-//   console.log('  $ custom-help --help');
-//   console.log('  $ custom-help -h');
-// });
-// program.parse(process.argv);
-// console.log(`You ordered a pizza with  and `);
-
-// program
-//   .requiredOption('-c, --cheese <type>', 'pizza must have cheese');
 program
-  .option('-f, --foo', 'enable some foo').action(function (dir, cmdObj) {
-    // console.log('remove ' + JSON.stringify(dir) + JSON.stringify(cmdObj))
+  .version(pk.version)
+
+program
+  .command('create <project>', '生成项目')
+  .action((dir, otherDirs) => {
+    console.log('fasdfasdf')
     create([
       step.first,
       step.mft,
       step.vue1,
       step.vue2,
       step.react1,
-      step.react2])
+      step.react2], 
+    process.argv[3])
   })
 
 program.on('--help', function(){
-    console.log('');
+    console.log('')
     console.log('Examples:');
     console.log('  $ custom-help --help');
     console.log('  $ custom-help -h');
   })
-program.version(pk.version)
+
 program.parse(process.argv)
-// console.log(process.argv)
