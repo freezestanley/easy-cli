@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "bin": {
-    "za-cli": "./link/index.js"
+    "za-cli": "./bin/index.js"
   },
   "scripts": {
     "lint:report": "eslint --ext .jsx,.js src -f checkstyle -o report_zacc_eslint_js.xml; exit 0"
