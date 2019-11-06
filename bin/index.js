@@ -28,7 +28,7 @@ const create = (promptList, dir) => {
       shell.echo('Sorry, this script requires git');
       shell.exit(1);
     }
-    shell.exec(`cp -rf ${path.resolve(__dirname, '../packages/react/')} ${process.cwd()}/${dir}/`)
+    shell.exec(`cp -rf ${path.resolve(__dirname, `../packages/${answers.type}/`)} ${process.cwd()}/${dir}/`)
   })
 }
 
@@ -47,8 +47,7 @@ program
         step.vue1,
         step.vue2,
         step.react1,
-        step.react2,
-        step.ui
+        step.react2
       ], 
       process.argv[3])
     }

@@ -85,9 +85,9 @@ const first = {
         value: "formatter"
       },
       {
-        key: "Ui",
-        name: "Ui",
-        value: "ui",
+        key: "zarmui",
+        name: "Zarm ui",
+        value: "zarm",
         checked: true
       },
       {
@@ -164,9 +164,9 @@ const first = {
         value: "formatter"
       },
       {
-        key: "Ui",
-        name: "Ui",
-        value: "ui",
+        key: "zarmui",
+        name: "Zarm ui",
+        value: "zarm",
         checked: true
       },
       {
@@ -186,30 +186,30 @@ const first = {
     }
   }
 
-const ui = {
-  type: 'list',
-  message: '请选择项目预设?',
-  prefix: icon.tool,
-  name: 'ui',
-  choices: [
-      {
-        key: "zarm",
-        name: "zarm",
-        value: "zarm"
-      },
-      {
-        key: "antd",
-        name: "antd",
-        value: "antd"
-      }
-  ],
-  filter: function (val) { // 使用filter将回答变为小写
-      return val
-  },
-  when: function (val) {
-    return val.select.find((e) => e === 'ui')
-  }
-}
+// const ui = {
+//   type: 'list',
+//   message: '请选择项目预设?',
+//   prefix: icon.tool,
+//   name: 'ui',
+//   choices: [
+//       {
+//         key: "zarm",
+//         name: "zarm",
+//         value: "zarm"
+//       },
+//       {
+//         key: "antd",
+//         name: "antd",
+//         value: "antd"
+//       }
+//   ],
+//   filter: function (val) { // 使用filter将回答变为小写
+//       return val
+//   },
+//   when: function (val) {
+//     return val.select.find((e) => e === 'ui')
+//   }
+// }
 
 module.exports = {
     first,
@@ -218,5 +218,4 @@ module.exports = {
     vue2,
     react1,
     react2,
-    ui
 }

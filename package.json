@@ -1,10 +1,10 @@
 {
   "name": "chain-test",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "",
   "main": "index.js",
   "bin": {
-    "zan": "./link/index.js"
+    "zan": "./bin/index.js"
   },
   "scripts": {
     "publish": "relix --patch",
@@ -13,12 +13,12 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "dependencies": {
     "chalk": "^2.4.2",
     "commander": "^4.0.0",
     "cross-env": "^6.0.3",
+    "eyweb": "^1.0.2",
     "inquirer": "^7.0.0",
     "lerna": "^3.18.3",
     "log": "^6.0.0",
