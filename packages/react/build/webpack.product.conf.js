@@ -14,13 +14,25 @@ const PreloadWebpackPlugin = require('preload-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
 const glob = require('glob-all')
-const env = require('./env')
 
 const config = require('./webpack.base.conf.js')
-config.mode(env.PRODUCTION)
+
+config.mode('production')
 
 <%_ if(plugin.indexOf("css")){_%>
 config.module.rule('sass')
+.use('mini')
+.loader(MiniCssExtractPlugin.loader).options({
+  hmr: process.env.NODE_ENV === 'development',
+  fallback: {
+    loader: require.resolve('style-loader'),
+    options: {
+      singleton: true
+    }
+  }
+}).before('css').end()
+
+config.module.rule('css')
 .use('mini')
 .loader(MiniCssExtractPlugin.loader).options({
   hmr: process.env.NODE_ENV === 'development',
@@ -96,10 +108,6 @@ config
       algorithm: 'gzip',
       threshold: 10240,
       minRatio: 0.7
-    }]).end()
-  .plugin('DefinePlugin')
-    .use(webpack.DefinePlugin, [{
-    
     }]).end()
   .plugin('PurifyCSS')
     .use(PurifyCSS, [{

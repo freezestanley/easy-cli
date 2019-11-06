@@ -8,7 +8,6 @@ const fs = require('fs-extra');
  * @param {*} plugin 
  */
 function getWebpackConfig(plugin = [], templatePath, writePath) {
-  console.log(plugin)
   //base
   const baseName = 'webpack.base.conf.js'
   ejs.renderFile(path.join(templatePath, baseName), { plugin: plugin }).then(res=>{

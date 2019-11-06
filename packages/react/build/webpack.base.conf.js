@@ -2,6 +2,7 @@
 const Config = require('webpack-chain')
 const path = require('path')
 const config = new Config()
+const webpack = require('webpack')
 // entry output 
 config
   .entry('index')
@@ -108,6 +109,24 @@ config.module.rule('less')
   .loader('js-to-styles-var-loader')
   .end()
 
+config.module.rule('css')
+  .test(/\.css$/i)
+  .use('css')
+  .loader('css-loader').end()
+  .use('postcss')
+  .loader('postcss-loader')
+  .options({
+    ident: 'postcss',
+    plugins: (loader) => [
+      require('postcss-preset-env')(),
+      require('postcss-normalize')({ forceImport: true }),
+      require('postcss-cssnext')(),
+      require('postcss-import')({ root: loader.resourcePath }),
+      require('postcss-selector-namespace')({ selfSelector: ':namespace', namespace: `` })
+    ]}).end()
+  .use('js2style')
+  .loader('js-to-styles-var-loader').end()
+
   config.module.rule('sass')
   .test(/\.s[ac]ss$/i)
   .use('css')
@@ -138,5 +157,10 @@ config.module.rule('images')
     quality: 85,
     name: '../dist/images/[name].[hash:8].[ext]',
   }).end()
-
+  
+config.plugin('DefinePlugin')
+  .use(webpack.DefinePlugin, [
+  {
+    
+  }]).end()
 module.exports = config

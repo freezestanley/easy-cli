@@ -3,13 +3,15 @@ const command = require('commander');
 const program = new command.Command();
 const inquirer = require('inquirer')
 const shell = require('shelljs')
-const fs = require('fs-extra');
+const log = require("log")
+const chalk = require('chalk')
 const path = require('path')
 const step = require('./step')
+const icon = require('./icon')
 const utils = require('./utils')
 const webpack = require('./wepackConfig')
-const aqa = path.resolve(__dirname,'../package.json')
-const Config = require('webpack-chain')
+const pk = require(path.resolve(__dirname,'../package.json'))
+const fs = require('fs')
 
 function doit (answer, name) {
   if (!shell.which('git')) {
@@ -103,7 +105,6 @@ function doit (answer, name) {
 
   webpack.getWebpackConfig(select,path.join(__TEMPLATE_PATH__, '/build/'),path.join(__PATH__, '/build/'))
   
-  
   //安装npm包
   utils.install(__PATH__,[...dependencies,...devDependencies]).then(()=>{
     let pkgDependencies={}
@@ -140,42 +141,47 @@ const installXflow=(root,flag)=>{
   
 }
 
-
 const create = (promptList, dir) => {
   inquirer.prompt(promptList).then((answers) => {
-    console.log(answers,dir)
+    if (!shell.which('git')) {
+      shell.echo('Sorry, this script requires git');
+      shell.exit(1);
+    }
     doit(answers, dir)
   })
 }
 
+const checkDir = (dirPath) => {
+  try {
+    fs.accessSync(dirPath)
+    console.error(chalk.red(`${icon.wow} 该项目已存在`))
+  } catch (error) {
+    return true 
+  }
+}
+
+// 获取版本
 program
-  .command('rmdir <dir> [otherDirs...]')
-  .action(function (dir, otherDirs) {
-    console.log('rmdir %s', dir);
-    if (otherDirs) {
-      otherDirs.forEach(function (oDir) {
-        console.log('rmdir %s', oDir);
-      });
-    }
-  })
-  
-program
-  .version('0.1.0')
+  .version(pk.version)
 
 program
   .command('create <project>')
   .action((dir, otherDirs) => {
-    console.log('fasdfasdf')
-    create([
-      step.first,
-      step.mft,
-      step.vue1,
-      step.vue2,
-      step.react1,
-      step.react2], 
-    process.argv[3])
+    const result = checkDir(`${process.cwd()}/${dir}`)
+    if (result) {
+      create([
+        step.first,
+        step.mft,
+        step.vue1,
+        step.vue2,
+        step.react1,
+        step.react2
+      ], 
+      process.argv[3])
+    }
   })
 
+// 获取 help
 program.on('--help', function(){
     console.log('')
     console.log('Examples:');
