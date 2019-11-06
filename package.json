@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "bin": {
-    "zan": "./bin/index.js"
+    "za-cli": "./bin/index.js"
   },
   "scripts": {
     "publish": "relix --patch",

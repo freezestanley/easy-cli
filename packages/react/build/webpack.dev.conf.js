@@ -3,10 +3,9 @@ const merge = require('webpack-merge')
 const webpack = require('webpack')
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const env = require('./env')
 
 const config = require('./webpack.base.conf.js')
-config.mode(env.DEVELOPMENT)
+config.mode('development')
 // devtool
 config.devtool('cheap-module-eval-source-map')
 
@@ -15,6 +14,10 @@ config.module.rule('sass')
 .loader('style-loader').before('css').end()
 
 config.module.rule('less')
+.use('style-loader')
+.loader('style-loader').before('css').end()
+
+config.module.rule('css')
 .use('style-loader')
 .loader('style-loader').before('css').end()
 
