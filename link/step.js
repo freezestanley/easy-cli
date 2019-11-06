@@ -1,8 +1,9 @@
+const icon = require('./icon')
 const first = {
     type: 'list',
     message: '请选择技术栈?',
     name: 'type',
-    prefix: '🔧',
+    prefix: icon.hand,
     choices: [
       {
         key: "vue",
@@ -21,7 +22,7 @@ const first = {
     type: 'confirm',
     message: '是否为微前端项目？',
     name: 'mft',
-    prefix: '🌟',
+    prefix: icon.star,
     filter: function (val) { // 使用filter将回答变为小写
         return val;
     }
@@ -30,11 +31,11 @@ const first = {
     type: 'list',
     message: '请选择项目预设?',
     name: 'perset',
-    prefix: '📦',
+    prefix: icon.box,
     choices: [
         {
           key: "default",
-          name: "默认(vue+vuex+vue-router+babel+zarmUI+xflow)",
+          name: "默认(vue+vuex+vue-router+babel+zarmUI+xflow+za-eslint)",
           value: "default"
         },
         {
@@ -55,43 +56,43 @@ const first = {
     type: 'checkbox',
     message: '请选择所需要的功能?',
     name: 'select',
-    prefix: '🧰',
+    prefix: icon.tool,
     choices: [
       {
         key: "vuex",
-        name: "vuex",
+        name: "Vuex",
         value: "vuex"
       },
       {
         key: "router",
-        name: "router",
+        name: "Router",
         value: "router",
         checked: true
       },
       {
         key: "typeScript",
-        name: "typeScript",
+        name: "TypeScript",
         value: "typeScript"
       },
       {
-        key: "css",
+        key: "Css",
         name: "CSS Pre-processors",
         value: "css"
       },
       {
-        key: "formatter",
+        key: "Formatter",
         name: "Linter / Formatter",
         value: "formatter"
       },
       {
-        key: "zarm",
-        name: "ZarmUI",
-        value: "zarm",
+        key: "Ui",
+        name: "Ui",
+        value: "ui",
         checked: true
       },
       {
-        key: "xflow",
-        name: "xflow",
+        key: "Xflow",
+        name: "Xflow",
         value: "xflow"
       }
     ],
@@ -109,11 +110,12 @@ const first = {
   const react1 = {
     type: 'list',
     message: '请选择项目预设?',
+    prefix: icon.tool,
     name: 'perset',
     choices: [
         {
           key: "default",
-          name: "defult(react+redux+react-router-dom+babel+zarmUI+xflow)",
+          name: "defult(react+redux+react-router-dom+babel+zarmUI+xflow+za-eslint)",
           value: "default"
         },
         {
@@ -134,7 +136,7 @@ const first = {
     type: 'checkbox',
     message: '请选择项目预设?',
     name: 'select',
-    prefix: '🧰',
+    prefix: icon.tool,
     choices: [
       { 
         key: "redux",
@@ -162,9 +164,9 @@ const first = {
         value: "formatter"
       },
       {
-        key: "zarm",
-        name: "ZarmUI",
-        value: "zarm",
+        key: "Ui",
+        name: "Ui",
+        value: "ui",
         checked: true
       },
       {
@@ -183,11 +185,38 @@ const first = {
       return val.type === 'react' && val.perset === 'select'
     }
   }
+
+const ui = {
+  type: 'list',
+  message: '请选择项目预设?',
+  prefix: icon.tool,
+  name: 'ui',
+  choices: [
+      {
+        key: "zarm",
+        name: "zarm",
+        value: "zarm"
+      },
+      {
+        key: "antd",
+        name: "antd",
+        value: "antd"
+      }
+  ],
+  filter: function (val) { // 使用filter将回答变为小写
+      return val
+  },
+  when: function (val) {
+    return val.select.find((e) => e === 'ui')
+  }
+}
+
 module.exports = {
     first,
     mft,
     vue1,
     vue2,
     react1,
-    react2
+    react2,
+    ui
 }

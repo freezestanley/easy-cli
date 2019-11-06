@@ -1,10 +1,10 @@
 {
-  "name": "webchain",
-  "version": "1.0.0",
+  "name": "chain-test",
+  "version": "1.0.4",
   "description": "",
   "main": "index.js",
   "bin": {
-    "za-cli": "./link/index.js"
+    "zan": "./link/index.js"
   },
   "scripts": {
     "lint:report": "eslint --ext .jsx,.js src -f checkstyle -o report_zacc_eslint_js.xml; exit 0"
@@ -13,6 +13,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+  },
+  "dependencies": {
     "chalk": "^2.4.2",
     "commander": "^4.0.0",
     "cross-env": "^6.0.3",
@@ -21,6 +23,5 @@
     "log": "^6.0.0",
     "prettier": "1.18.2",
     "shelljs": "^0.8.3"
-  },
-  "dependencies": {}
+  }
 }
