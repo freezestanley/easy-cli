@@ -171,6 +171,11 @@ const first = {
         key: "xflow",
         name: "xflow",
         value: "xflow"
+      },
+      {
+        key: "cloudEvent",
+        name: "cloudEvent",
+        value: "cloudEvent"
       }
     ],
     validate: function (val) {

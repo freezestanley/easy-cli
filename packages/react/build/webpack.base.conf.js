@@ -57,6 +57,7 @@ config.module.rule('compile')
   }).end()
 
 
+<%_ if(plugin.includes("formatter")) { _%>
 config.module.rule('eslint')
   .exclude.add(/(node_modules|bower_components)/).end()
   .include.add(path.resolve(__dirname,'../src')).end()
@@ -67,8 +68,10 @@ config.module.rule('eslint')
   .options({
     formatter: require('eslint-friendly-formatter')
   }).end()
+<%_ } _%>
 
 
+<%_ if(plugin.includes("typescript")) { _%>
 config.module.rule('ts')
   .exclude.add(/(node_modules|bower_components)/)
   .end()
@@ -78,8 +81,9 @@ config.module.rule('ts')
   .loader('ts-loader').options({
     happyPackMode: true
   }).end()
+<%_}_%>
 
-
+<%_ if(plugin.includes("css")){_%>
 config.module.rule('less')
   .test(/\.less$/)
   .use('css')
@@ -104,7 +108,7 @@ config.module.rule('less')
   .loader('js-to-styles-var-loader')
   .end()
 
-config.module.rule('sass')
+  config.module.rule('sass')
   .test(/\.s[ac]ss$/i)
   .use('css')
   .loader('css-loader').end()
@@ -123,6 +127,8 @@ config.module.rule('sass')
   .loader('sass-loader').end()
   .use('js2style')
   .loader('js-to-styles-var-loader').end()
+<%_}_%>
+
 
 config.module.rule('images')
   .test(/\.(png|jpg|gif)$/i)

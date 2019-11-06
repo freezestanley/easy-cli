@@ -19,6 +19,7 @@ const env = require('./env')
 const config = require('./webpack.base.conf.js')
 config.mode(env.PRODUCTION)
 
+<%_ if(plugin.indexOf("css")){_%>
 config.module.rule('sass')
 .use('mini')
 .loader(MiniCssExtractPlugin.loader).options({
@@ -42,7 +43,7 @@ config.module.rule('less')
     }
   }
 }).before('css').end()
-
+<%_}_%>
 
 // plugin
 config  

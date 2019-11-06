@@ -10,6 +10,7 @@ config.mode(env.DEVELOPMENT)
 // devtool
 config.devtool('cheap-module-eval-source-map')
 
+<%_ if(plugin.indexOf("css")){_%>
 config.module.rule('sass')
 .use('style-loader')
 .loader('style-loader').before('css').end()
@@ -17,7 +18,7 @@ config.module.rule('sass')
 config.module.rule('less')
 .use('style-loader')
 .loader('style-loader').before('css').end()
-
+<%_}_%>
 // plugin
 config.plugin('htmlwebpackplugin')
     .use(HtmlWebpackPlugin, [
