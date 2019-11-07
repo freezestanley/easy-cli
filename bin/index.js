@@ -19,9 +19,9 @@ function doit (answer, name) {
     shell.exit(1);
   }
 
-  if(!utils.checkThatNpmCanReadCwd()){
-    return
-  }
+  // if(!utils.checkThatNpmCanReadCwd()){
+  //   return
+  // }
 
   const {select, perset,type} = answer
   const pkg = {
@@ -56,7 +56,8 @@ function doit (answer, name) {
   }
 
   //拷贝文件
-  shell.exec(`cp -rf ${__TEMPLATE_PATH__} ${__PATH__}`)
+  utils.copyFolder(__TEMPLATE_PATH__, __PATH__)
+  // shell.exec(`cp -rf ${__TEMPLATE_PATH__} ${__PATH__}`)
 
   //xflow
   if(perset=='default' || (select||'').includes('xflow')){
@@ -122,6 +123,7 @@ function doit (answer, name) {
 
   })
 }
+
 //设置xflow
 const installXflow=(root,flag)=>{
 

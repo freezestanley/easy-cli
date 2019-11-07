@@ -33,56 +33,24 @@ function npmInstall(root,dependencies) {
     });
   });
 }
-//检查NPM
-function checkThatNpmCanReadCwd() {
-  const cwd = process.cwd();
-  let childOutput = null;
-  try {
-    childOutput = spawn.sync('npm', ['config', 'list']).output.join('');
-  } catch (err) {
-    return true;
-  }
-  if (typeof childOutput !== 'string') {
-    return true;
-  }
-  const lines = childOutput.split('\n');
- 
-  const prefix = '; cwd = ';
-  const line = lines.find(line => line.indexOf(prefix) === 0);
-  if (typeof line !== 'string') {
-    // Fail gracefully. They could remove it.
-    return true;
-  }
-  const npmCWD = line.substring(prefix.length);
-  if (npmCWD === cwd) {
-    return true;
-  }
-  console.error(
-    chalk.red(
-      `Could not start an npm process in the right directory.\n\n` +
-        `The current directory is: ${chalk.bold(cwd)}\n` +
-        `However, a newly started npm process runs in: ${chalk.bold(
-          npmCWD
-        )}\n\n` +
-        `This is probably caused by a misconfigured system terminal shell.`
-    )
-  );
-  if (process.platform === 'win32') {
-    console.error(
-      chalk.red(`On Windows, this can usually be fixed by running:\n\n`) +
-        `  ${chalk.cyan(
-          'reg'
-        )} delete "HKCU\\Software\\Microsoft\\Command Processor" /v AutoRun /f\n` +
-        `  ${chalk.cyan(
-          'reg'
-        )} delete "HKLM\\Software\\Microsoft\\Command Processor" /v AutoRun /f\n\n` +
-        chalk.red(`Try to run the above two lines in the terminal.\n`) +
-        chalk.red(
-          `To learn more about this problem, read: https://blogs.msdn.microsoft.com/oldnewthing/20071121-00/?p=24433/`
-        )
-    );
-  }
-  return false;
+
+function copyFolder(from, to) {        // 复制文件夹到指定目录
+    let files = [];
+    if (fs.existsSync(to)) {           // 文件是否存在 如果不存在则创建
+        files = fs.readdirSync(from);
+        files.forEach(function (file, index) {
+            var targetPath = from + "/" + file;
+            var toPath = to + '/' + file;
+            if (fs.statSync(targetPath).isDirectory()) { // 复制文件夹
+                copyFolder(targetPath, toPath);
+            } else {                                    // 拷贝文件
+                fs.copyFileSync(targetPath, toPath);
+            }
+        });
+    } else {
+        fs.mkdirSync(to);
+        copyFolder(from, to);
+    }
 }
 
 /**
@@ -125,7 +93,8 @@ function delDir(path){
 
 module.exports={
   install:npmInstall,
-  checkThatNpmCanReadCwd,
+  // checkThatNpmCanReadCwd,
   checkPackageRange,
-  delDir
+  delDir,
+  copyFolder
 }
