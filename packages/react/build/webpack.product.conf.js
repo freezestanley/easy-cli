@@ -8,6 +8,7 @@ const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const safePostCssParser = require('postcss-safe-parser')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const PurifyCSS = require('purifycss-webpack')
 const PreloadWebpackPlugin = require('preload-webpack-plugin')
@@ -120,7 +121,10 @@ config
       chunkFilename: "[name].[contenthash:8].css"
     }]).end()
   .plugin('OptimizeCssAssetsPlugin')
-    .use(OptimizeCssAssetsPlugin, [{ cssProcessorOptions: { safe: true } }]).end()
+    .use(OptimizeCssAssetsPlugin, [{ 
+      cssProcessorOptions: { 
+        parser: safePostCssParser
+      } }]).end()
   .plugin('NamedModulesPlugin')
     .use(webpack.NamedModulesPlugin).end()
   .plugin('clean')
@@ -158,5 +162,9 @@ config.optimization
     })
     .removeEmptyChunks(true)
 
-const result = config.toString()
+const result = merge({}, config.toConfig())
+const compiler = webpack(result);
+compiler.run((err, stats) => {
+  console.log('Successful')
+});
 module.exports = merge({}, config.toConfig())

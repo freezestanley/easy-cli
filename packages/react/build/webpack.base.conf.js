@@ -157,4 +157,13 @@ config.plugin('DefinePlugin')
   {
     
   }]).end()
+
+  // config.node.set('module', 'empty')
+  // config.node.set('dgram', 'empty')
+  // config.node.set('fs', 'empty')
+  // config.node.set('http2', 'empty')
+  // config.node.set('net', 'empty')
+  // config.node.set('tls', 'empty')
+  // config.node.set('child_process', 'empty')
+
 module.exports = config

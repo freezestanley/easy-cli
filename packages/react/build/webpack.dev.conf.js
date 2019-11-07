@@ -1,6 +1,7 @@
 'use strict'
 const merge = require('webpack-merge')
 const webpack = require('webpack')
+const webpackDevServer = require('webpack-dev-server')
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
@@ -27,37 +28,38 @@ config.plugin('htmlwebpackplugin')
     Object.assign(
         {},
         {
-        inject: true,
-        template: path.resolve(__dirname, '../index.html')
-        },
-        {
-        minify: {
-            removeComments: true,
-            collapseWhitespace: true,
-            removeRedundantAttributes: true,
-            useShortDoctype: true,
-            removeEmptyAttributes: true,
-            removeStyleLinkTypeAttributes: true,
-            keepClosingSlash: true,
-            minifyJS: true,
-            minifyCSS: true,
-            minifyURLs: true,
-        }
+          inject: true,
+          template: path.resolve(__dirname, '../index.html')
         }
     )
     ]).end()
   .plugin('HotModuleReplacementPlugin')
   .use(webpack.HotModuleReplacementPlugin).end()
-// devServer
-config.devServer.contentBase('../dist')
-  .port(8080)
-  .inline(true)
-  .historyApiFallback(true)
-  .hot(true)
-  .compress(true)
 
 config.performance.hints(false)
 
-const result = config.toString()
-console.log(result)
+// devServer
+// config.devServer.contentBase('../dist')
+//   .port(8080)
+//   .inline(true)
+//   .historyApiFallback(true)
+//   .hot(true)
+//   .compress(true)
+
+const options = {
+  contentBase: '../dist',
+  hot: true,
+  host: 'localhost',
+  historyApiFallback: true,
+  compress: true
+}
+
+const result = merge({}, config.toConfig())
+webpackDevServer.addDevServerEntrypoints(result, options)
+const compiler = webpack(result)
+const server = new webpackDevServer(compiler, options)
+server.listen(5000, 'localhost', () => {
+  console.log('dev server listening on port 5000');
+})
+
 module.exports = merge({}, config.toConfig())
