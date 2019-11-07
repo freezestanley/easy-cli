@@ -1,6 +1,7 @@
 #!/usr/bin/env node 
-const command = require('commander');
-const program = new command.Command();
+const command = require('commander')
+const program = new command.Command()
+const spawn = require('cross-spawn')
 const inquirer = require('inquirer')
 const shell = require('shelljs')
 const log = require("log")
@@ -28,7 +29,8 @@ const create = (promptList, dir) => {
       shell.echo('Sorry, this script requires git');
       shell.exit(1);
     }
-    shell.exec(`cp -rf ${path.resolve(__dirname, `../packages/${answers.type}/`)} ${process.cwd()}/${dir}/`)
+    const child = spawn('cp', ['-rf', `${path.resolve(__dirname, `../packages/${answers.type}/`)}`, `${process.cwd()}/${dir}/`], { stdio: 'inherit' })
+    // shell.exec(`cp -rf ${path.resolve(__dirname, `../packages/${answers.type}/`)} ${process.cwd()}/${dir}/`)
   })
 }
 
