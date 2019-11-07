@@ -1,0 +1,45 @@
+@import 'styles/variables.scss';
+.drawer-container {
+  :global {
+    .ant-drawer-body {
+      padding: 44px 68px;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+  }
+}
+.drawer-content {
+  height: 100%;
+}
+.title {
+  color: $fontColor-3;
+  font-size:18px;
+  line-height:25px;
+  font-weight:500;
+  margin-bottom: 20px;
+}
+.content {
+  position: relative;
+  height: calc(100% - 45px);
+  overflow: auto;
+}
+.info-container {
+  width: 750px;
+}
+.anchor-container {
+  position: absolute;
+  right: 12px;
+  top: 0;
+}
+.anchor-title {
+  background: $bgColor-1;
+  line-height: 42px;
+  color: $fontColor-3;
+  font-weight:500;
+  padding-left: 9px;
+  margin-bottom: 20px;
+  &:last-child {
+    margin-bottom: 0;
+  }
+}

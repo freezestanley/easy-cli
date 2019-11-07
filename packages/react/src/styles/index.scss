@@ -1,0 +1,194 @@
+@import './variables.scss';
+@import './mixin.scss';
+
+body {
+  height: 100%;
+  position: relative;
+  background-color: #ffffff;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+}
+
+// label {
+//   font-weight: 700;
+// }
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+#root {
+  height: 100%;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+a:focus,
+a:active {
+  outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+div:focus {
+  outline: none;
+}
+
+.fr {
+  float: right;
+}
+
+.fl {
+  float: left;
+}
+
+.clearfix {
+  &:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: ' ';
+    clear: both;
+    height: 0;
+  }
+}
+
+.width-height-100 {
+  width: 100%;
+  height: 100%;
+}
+
+// main-container global css
+.app-container {
+  padding: 20px;
+}
+
+//常用字号
+.fs12 {
+  font-size: 12px;
+}
+
+.fs14 {
+  font-size: 14px;
+}
+
+.fs16 {
+  font-size: 16px;
+}
+
+.fs18 {
+  font-size: 18px;
+}
+
+
+/* 对齐 */
+.tac {
+  text-align: center;
+}
+.tar {
+  text-align: right;
+}
+.h-v-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+/* display */
+
+.df {
+  display: flex;
+}
+
+.df-wrap {
+  flex-wrap: wrap;
+}
+
+.db {
+  display: block;
+}
+
+.dib {
+  display: inline-block;
+}
+
+/* 常用颜色 */
+.bg-white {
+  background-color: #ffffff; 
+}
+.theme {
+  color: $theme;
+}
+
+/* 全局覆盖antd样式 */
+.ant-layout {
+  background: #ffffff;
+}
+
+/* 常用 margin 值 */
+.mar-r-8 {
+  margin-right: 8px;
+}
+.mar-r-10 {
+  margin-right: 10px;
+}
+.mar-r-12 {
+  margin-right: 12px;
+}
+.mar-b-30 {
+  margin-bottom: 30px;
+}
+
+/* 表格筛选条件样式 */
+.filter-form {
+  .filter-form-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .ant-form-inline .ant-form-item {
+    margin-right: 0;
+  }
+  .ant-form-item-control {
+    width: 200px;
+  }
+  // :global {
+  //   .ant-form-item-control {
+  //     width: 165px;
+  //   }
+  // }
+}
+
+.ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+// 处理table内容超长的问题
+.fixedWidthTable table {
+  table-layout: fixed;
+}
+
+.fixedWidthTable .ant-table-tbody > tr > td {
+  word-wrap: break-word;
+  word-break: break-all;
+}
+

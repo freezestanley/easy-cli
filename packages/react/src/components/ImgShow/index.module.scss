@@ -1,0 +1,37 @@
+@import 'styles/variables.scss';
+
+.hide-delete {
+  :global {
+    .anticon-delete {
+      display: none;
+    }
+  }
+}
+.modal-container {
+  :global {
+    .ant-modal-body {
+      padding: 0;
+    }
+  }
+}
+.image-viewer-header {
+  position: relative;
+  line-height: 46px;
+}
+.header-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.header-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.active {
+  color: $theme;
+  cursor: pointer;
+}
+.inactive {
+  pointer-events: none;
+}
