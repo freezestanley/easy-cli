@@ -1,0 +1,430 @@
+<template>
+  <div class="com-add-info">
+    <h3>企业基本信息</h3>
+    <el-form ref="basicForm" :model="basicForm" :rules="ruleBasic" class="form-container" label-position="left" label-width="135px">
+      <el-form-item label="公司LOGO" prop="corpLogo">
+        <image-upload :url.sync="basicForm.corpLogo" />
+        <el-input v-show="false" v-model="basicForm.corpLogo" />
+      </el-form-item>
+      <el-form-item label="企业名称" prop="corpName">
+        <el-input v-model.trim="basicForm.corpName" type="text" disabled clearable auto-complete="off" :maxlength="30" :show-word-limit="true" placeholder="请输入企业名称" />
+      </el-form-item>
+      <el-form-item label="统一社会信用代码" prop="creditCode">
+        <el-input v-model.trim="basicForm.creditCode" type="text" clearable auto-complete="off" placeholder="请输入统一社会信用代码" />
+      </el-form-item>
+      <el-form-item label="成立日期" prop="buildTime">
+        <el-date-picker v-model="basicForm.buildTime" type="date" placeholder="请选择" value-format="yyyy-MM-dd HH:mm:ss" />
+      </el-form-item>
+      <el-form-item label="注册资本" prop="registerCapital">
+        <div class="relative">
+          <el-input-number
+            v-model="basicForm.registerCapital"
+            controls-position="right"
+            :controls="false"
+            :min="0.0001"
+            :max="9999999999.9999"
+            :step="0.0001"
+            step-strictly
+            placeholder="请输入注册资本"
+          />
+          <div class="suffix">万元</div>
+        </div>
+      </el-form-item>
+      <el-form-item label="注册地址" prop="businessAddress">
+        <el-input v-model.trim="basicForm.businessAddress" type="text" clearable auto-complete="off" :maxlength="50" :show-word-limit="true" placeholder="请输入注册地址" />
+      </el-form-item>
+      <el-form-item label="通信地址" prop="mailAddress">
+        <el-input v-model.trim="basicForm.mailAddress" type="text" clearable auto-complete="off" :maxlength="50" :show-word-limit="true" placeholder="请输入通信地址" />
+      </el-form-item>
+      <el-form-item label="所属行业" prop="industry">
+        <el-select v-model="basicForm.industry " placeholder="请选择企业所在行业" class="el-input">
+          <el-option value>请选择</el-option>
+          <el-option v-for="s in industrys" :key="s.value" :label="s.label" :value="s.value" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="企业规模" prop="scale">
+        <el-select v-model="basicForm.scale " placeholder="请选择企业所在行业" class="el-input">
+          <el-option value>请选择</el-option>
+          <el-option v-for="s in scales" :key="s.value" :label="s.label" :value="s.value" />
+        </el-select>
+        <div class="disabled">中小企业的划分标准可参考
+          <a :href="QIYE_TYPE_URL" target="_blank" class="theme">
+            《关于印发中小企业划型标准规定的通知》
+          </a>
+          工信部联企业【2011】300号。
+        </div>
+      </el-form-item>
+      <el-form-item label="营业执照-正件" prop="businessLicensePic">
+        <image-upload :url.sync="basicForm.businessLicensePic" />
+        <el-input v-show="false" v-model="basicForm.businessLicensePic" />
+      </el-form-item>
+      <el-form-item label="营业执照-副件" prop="businessLicenseDuplicatePic">
+        <image-upload :url.sync="basicForm.businessLicenseDuplicatePic" />
+        <el-input v-show="false" v-model="basicForm.businessLicenseDuplicatePic" />
+      </el-form-item>
+      <el-form-item label="补充资质证件 （选填）" prop="corpAttachmentDtos">
+        <file-upload :url-arr.sync="basicForm.corpAttachmentDtos" />
+      </el-form-item>
+    </el-form>
+
+    <h3>企业法人信息</h3>
+    <el-form ref="corporationForm" :model="corporationForm" :rules="ruleCorporation" class="form-container" label-position="left" label-width="135px">
+      <el-form-item label="法人姓名" prop="legalName">
+        <el-input v-model.trim="corporationForm.legalName" type="text" clearable auto-complete="off" :maxlength="20" :show-word-limit="true" placeholder="请输入法人姓名" />
+      </el-form-item>
+      <el-form-item label="法人手机号" prop="legalMobile">
+        <el-input v-model.trim="corporationForm.legalMobile" type="text" clearable auto-complete="off" placeholder="请输入法人手机号" />
+      </el-form-item>
+      <el-form-item label="法人身份证号" prop="legalCard">
+        <el-input v-model.trim="corporationForm.legalCard" type="text" clearable auto-complete="off" placeholder="请输入法人身份证号" />
+      </el-form-item>
+      <el-form-item label="身份证正面" prop="legalCardPic">
+        <image-upload :url.sync="corporationForm.legalCardPic" />
+        <el-input v-show="false" v-model="corporationForm.legalCardPic" />
+      </el-form-item>
+      <el-form-item label="身份证反面" prop="legalCardBackPic">
+        <image-upload :url.sync="corporationForm.legalCardBackPic" />
+        <el-input v-show="false" v-model="corporationForm.legalCardBackPic" />
+      </el-form-item>
+    </el-form>
+
+    <h3>业务负责人信息</h3>
+    <el-form ref="managerForm" :model="managerForm" :rules="ruleManager" class="form-container" label-position="left" label-width="135px">
+      <el-form-item label="业务负责人姓名" prop="contractUser">
+        <el-input v-model.trim="managerForm.contractUser" type="text" clearable auto-complete="off" :maxlength="20" :show-word-limit="true" placeholder="请输入业务负责人姓名" />
+      </el-form-item>
+      <el-form-item label="职务" prop="contractPost">
+        <el-input v-model.trim="managerForm.contractPost" type="text" clearable auto-complete="off" :maxlength="20" :show-word-limit="true" placeholder="请输入业务负责人职务" />
+      </el-form-item>
+      <el-form-item label="身份证号" prop="contractCard">
+        <el-input v-model.trim="managerForm.contractCard" type="text" clearable auto-complete="off" placeholder="请输入业务负责人身份证号" />
+      </el-form-item>
+      <el-form-item label="手机号" prop="contractTel">
+        <el-input v-model.trim="managerForm.contractTel" type="text" clearable auto-complete="off" placeholder="请输入业务负责人手机号" />
+      </el-form-item>
+      <el-form-item label="邮箱" prop="contractEmail">
+        <el-input v-model.trim="managerForm.contractEmail" type="text" clearable auto-complete="off" placeholder="请输入业务负责人邮箱" />
+      </el-form-item>
+      <el-form-item class="tac">
+        <el-button @click="back">取消</el-button>
+        <el-button v-if="checkPermission('account-corp-info__add') || checkPermission('account-corp-info__edit')" type="primary" @click="submit">提交</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
+</template>
+
+<script>
+import ImageUpload from './components/ImageUpload'
+import FileUpload from '@/components/FileUpload/index'
+
+import { mapGetters } from 'vuex'
+import { Regs } from '@/utils/validator.js'
+import { industrys, scales } from '@/utils/industry'
+import { QIYE_TYPE_URL } from '@/utils/constant/corp-info'
+import checkPermission from '@/utils/permission'
+
+import { CommonApi } from '@/api'
+
+export default {
+  name: '',
+  components: {
+    ImageUpload,
+    FileUpload
+  },
+  props: {
+    update: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data () {
+    const validatePhone = (rule, value, callback) => {
+      if (!Regs.isPhone(value)) {
+        return callback(new Error('手机号格式不正确'))
+      } else {
+        callback()
+      }
+    }
+    const validateUSCC = (rule, value, callback) => {
+      if (!Regs.isUSCC(value)) {
+        return callback(new Error('统一社会信用代码格式不正确'))
+      } else {
+        callback()
+      }
+    }
+    const validateEmail = (rule, value, callback) => {
+      if (!Regs.isEmail(value)) {
+        return callback(new Error('邮箱格式不正确'))
+      } else {
+        callback()
+      }
+    }
+    const validateIdNo = (rule, value, callback) => {
+      if (!Regs.isIdCardNo(value)) {
+        return callback(new Error('身份证号码格式不正确'))
+      } else {
+        callback()
+      }
+    }
+    return {
+      industrys,
+      scales,
+      QIYE_TYPE_URL,
+      basicForm: {
+        corpLogo: '',
+        corpName: '',
+        creditCode: '',
+        buildTime: '',
+        registerCapital: undefined,
+        businessAddress: '',
+        mailAddress: '',
+        industry: '',
+        scale: '',
+        businessLicensePic: '',
+        businessLicenseDuplicatePic: '',
+        corpAttachmentDtos: []
+      },
+      ruleBasic: {
+        corpLogo: [
+          { required: true, message: '请上传企业LOGO', trigger: 'change' }
+        ],
+        corpName: [
+          { required: true, message: '请输入企业名称', trigger: 'blur' }
+        ],
+        creditCode: [
+          { required: true, message: '请输入统一社会信用代码', trigger: 'blur' },
+          { validator: validateUSCC, trigger: 'blur' }
+        ],
+        buildTime: [
+          { required: true, message: '请选择', trigger: 'blur' }
+        ],
+        registerCapital: [
+          { required: true, message: '请输入注册资本', trigger: 'blur' },
+        ],
+        businessAddress: [
+          { required: true, message: '请输入注册地址', trigger: 'blur' }
+        ],
+        mailAddress: [
+          { required: true, message: '请输入通信地址', trigger: 'blur' }
+        ],
+        industry: [
+          { required: true, message: '请选择所属行业', trigger: 'blur' }
+        ],
+        scale: [
+          { required: true, message: '请选择企业规模', trigger: 'blur' }
+        ],
+        businessLicensePic: [
+          { required: true, message: '请上传营业执照-正件', trigger: 'change' }
+        ],
+        businessLicenseDuplicatePic: [
+          { required: true, message: '请上传营业执照-副件', trigger: 'change' }
+        ]
+      },
+      corporationForm: {
+        legalName: '',
+        legalMobile: '',
+        legalCard: '',
+        legalCardPic: '',
+        legalCardBackPic: ''
+      },
+      ruleCorporation: {
+        legalName: [
+          { required: true, message: '请输入法人姓名', trigger: 'blur' }
+        ],
+        legalMobile: [
+          { required: true, message: '请输入法人手机号', trigger: 'blur' },
+          { validator: validatePhone, trigger: 'blur' }
+        ],
+        legalCard: [
+          { required: true, message: '请输入法人身份证号', trigger: 'blur' },
+          { validator: validateIdNo, trigger: 'blur' }
+        ],
+        legalCardPic: [
+          { required: true, message: '请上传', trigger: 'change' }
+        ],
+        legalCardBackPic: [
+          { required: true, message: '请上传', trigger: 'change' }
+        ]
+      },
+      managerForm: {
+        contractUser: '',
+        contractPost: '',
+        contractCard: '',
+        contractTel: '',
+        contractEmail: ''
+      },
+      ruleManager: {
+        contractUser: [
+          { required: true, message: '请输入业务负责人姓名', trigger: 'blur' }
+        ],
+        contractPost: [
+          { required: true, message: '请输入业务负责人职务', trigger: 'blur' }
+        ],
+        contractCard: [
+          { required: true, message: '请输入业务负责人身份证号', trigger: 'blur' },
+          { validator: validateIdNo, trigger: 'blur' }
+        ],
+        contractTel: [
+          { required: true, message: '请输入业务负责人手机号', trigger: 'blur' },
+          { validator: validatePhone, trigger: 'blur' }
+        ],
+        contractEmail: [
+          { required: true, message: '请输入业务负责人邮箱', trigger: 'blur' },
+          { validator: validateEmail, trigger: 'blur' }
+        ]
+      }
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'userInfo'
+    ])
+  },
+  created() {
+    this.basicForm.corpName = this.userInfo.corpName
+  },
+  methods: {
+    checkPermission,
+    back() {
+      this.$confirm('取消将不保存编辑数据，确定要放弃编辑吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$refs.basicForm.resetFields()
+        this.$refs.corporationForm.resetFields()
+        this.$refs.managerForm.resetFields()
+        this.$emit('cancel')
+      })
+    },
+    submit() {
+      const promises = ['basicForm', 'corporationForm', 'managerForm'].map((item) => this.validateForm(item))
+      Promise.all(promises).then(() => {
+        const h = this.$createElement
+        this.$msgbox({
+          title: '提示',
+          type: 'warning',
+          message: h('div', null, [
+            h('div', null, `确认要${!this.update ? '提交' : '修改'}企业信息吗？`),
+            h('div', { style: 'font-size: 12px; margin-top: 6px;' }, !this.update ? '提交成功后请耐心等待平台审核，审核通过后可以进行业务操作' : '提交成功后请耐心等待平台审核，审核通过后更新企业信息')
+          ]),
+          showCancelButton: true,
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+        }).then(() => {
+          if (!this.update) {
+            // 添加
+            const addData = this._dataInterfaceA()
+            CommonApi.addCorpInfo(addData).then(() => {
+              this.$message({ message: '提交成功', type: 'success' })
+              this.$store.dispatch('user/getInfo')
+              this.$emit('handleAdd')
+            })
+          } else {
+            // 修改
+            const data = this._dataInterfaceA()
+            CommonApi.updateCorpInfo(data).then(() => {
+              this.$message({ message: '修改成功', type: 'success' })
+              this.$store.dispatch('user/getInfo')
+              this.$emit('handleAdd')
+            })
+          }
+        }).catch(() => {
+
+        })
+      })
+    },
+    validateForm(formName) {
+      return new Promise((resolve, reject) => {
+        this.$refs[formName].validate(valid => {
+          if (valid) {
+            resolve()
+          } else {
+            reject()
+          }
+        })
+      })
+    },
+    // 对数据处理，传给后端
+    _dataInterfaceA() {
+      return {
+        corpNo: this.userInfo.corpNo,
+        corpBaseDto: {
+          ...this.basicForm,
+          ...this.corporationForm
+        },
+        corpLeaderDto: {
+          ...this.managerForm
+        },
+        corpAttachmentDtos: this._dataInterfaceB()
+      }
+    },
+    // 对数据处理，传给后端，补充资质证件数据处理
+    _dataInterfaceB() {
+      const result = []
+      this.basicForm.corpAttachmentDtos.forEach(item => {
+        if (item) {
+          result.push({
+            filePath: item,
+            fileType: 'Other'
+          })
+        }
+      })
+      return result
+    },
+    setData(data) {
+      this.basicForm = data.basicForm
+      this.corporationForm = data.corporationForm
+      this.managerForm = data.managerForm
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.main {
+  background: #ffffff;
+}
+h3 {
+  margin: 0;
+  line-height: 22px;
+  color: $titleColor;
+}
+.form-container {
+  width: 628px;
+  padding: 32px 0;
+  /deep/ .el-date-editor.el-input {
+    width: 100%;
+  }
+  /deep/ .el-input-number {
+    width: 100%;
+  }
+  /deep/ .el-input-number .el-input__inner {
+    text-align: left;
+  }
+  /deep/ .el-input-number__decrease, .el-input-number__increase {
+    display: none;
+  }
+  /deep/ .el-form-item__label::before {
+    display: none;
+  }
+  /deep/ .el-input .el-input__count .el-input__count-inner {
+    line-height: initial;
+  }
+}
+.submit-buttons {
+  text-align: center;
+}
+.relative {
+  position: relative;
+}
+.suffix {
+  position: absolute;
+  height: 100%;
+  right: 5px;
+  top: 0;
+  text-align: center;
+  color: #909399;
+}
+</style>
+
