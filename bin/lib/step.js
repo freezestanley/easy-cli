@@ -1,7 +1,7 @@
 const icon = require('./icon')
 const first = {
     type: 'list',
-    message: '请选择技术栈?',
+    message: 'pick vue or react?',
     name: 'type',
     prefix: icon.hand,
     choices: [
