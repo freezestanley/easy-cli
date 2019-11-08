@@ -1,6 +1,6 @@
 {
   "name": "chain-test",
-  "version": "1.0.22",
+  "version": "1.0.23",
   "description": "",
   "main": "index.js",
   "bin": {
@@ -22,11 +22,12 @@
     "log": "^6.0.0",
     "path": "^0.12.7",
     "shelljs": "^0.8.3",
-    "easy-plugin-cloudevent": "^1.0.3"
-  },
-  "devDependencies": {
+    "easy-plugin-cloudevent": "^1.0.3",
     "download-git-repo": "^3.0.2",
     "execa": "^3.2.0",
     "ora": "^4.0.2"
+  },
+  "devDependencies": {
+    
   }
 }
