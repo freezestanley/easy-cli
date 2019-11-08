@@ -9,7 +9,8 @@ const step = require('./step')
 const icon = require('./icon')
 const pk = require(path.resolve(__dirname,'../../package.json'))
 const ejs = require('ejs')
-const fs = require('fs-extra');
+const fs = require('fs-extra')
+const perset = require('./perset')
 
 const checkDir = (dirPath) => {
   try {
@@ -22,39 +23,22 @@ const checkDir = (dirPath) => {
 
 const create = (promptList, dir) => {
   inquirer.prompt(promptList).then((answers) => {
-    
-    // fs.readFile(path.resolve(__dirname, './.zarc.js'), 'utf-8', function(err, data) {
-    //     if (err) {
-    //         throw err;
-    //     }
-    //     console.log(data);
-    //     fs.writeFile(`${process.cwd()}/${dir}/.zarc.js`, data, { 'flag': 'a' }, function(err) {
-    //         if (err) {
-    //             throw err;
-    //         }
-    //         console.log('ok');
-    //     })
+    fs.mkdirpSync(dir)
+    if (answers.perset === 'default') {
+      answers.select = answers.type === 'vue' ? perset.vue : perset.react
+    }
 
-    // })
-    // fs.writeFile('./.zarc.js', answers, { 'flag': 'a' }, function(err) {
-    //     if (err) {
-    //         throw err;
-    //     }
-    //     // 写入成功后读取测试
-    //     fs.readFile('./.zarc.js', 'utf-8', function(err, data) {
-    //         if (err) {
-    //             throw err;
-    //         }
-    //         console.log(data);
-    //     });
-    // });
-
-    // if (!shell.which('git')) {
-    //   shell.echo('Sorry, this script requires git');
-    //   shell.exit(1);
-    // }
-    // const child = spawn('cp', ['-rf', `${path.resolve(__dirname, `../packages/${answers.type}/`)}`, `${process.cwd()}/${dir}/`], { stdio: 'inherit' })
-    // shell.exec(`cp -rf ${path.resolve(__dirname, `../packages/${answers.type}/`)} ${process.cwd()}/${dir}/`)
+    ejs.renderFile(path.join(__dirname, './template/zarc.js'), { 
+      plugin: answers.select,
+      mft: answers.mft,
+      type: answers.type
+    }).then(res=>{
+      fs.writeFileSync(
+        `${process.cwd()}/${dir}/.zarc.js`,
+        res
+      );
+    })
+    console.log(chalk.green('success!'))
   })
 }
 
@@ -65,8 +49,8 @@ program
 program
   .command('create <project>')
   .action((dir, otherDirs) => {
-    // const result = checkDir(`${process.cwd()}/${dir}`)
-    // if (result) {
+    const result = checkDir(`${process.cwd()}/${dir}`)
+    if (result) {
       create([
         step.first,
         step.mft,
@@ -76,7 +60,7 @@ program
         step.react2
       ], 
       process.argv[3])
-    // }
+    }
   })
 
 // 获取 help
