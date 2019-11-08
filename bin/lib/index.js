@@ -12,6 +12,7 @@ const ejs = require('ejs')
 const fs = require('fs-extra')
 const perset = require('./perset')
 const spawn = require('cross-spawn')
+const execa = require('execa')
 const utils = require('./utils')
 
 const checkDir = (dirPath) => {
@@ -47,9 +48,8 @@ const create = (promptList, dir) => {
         `${process.cwd()}/${dir}/package.json`,
         res
       )
-      utils.install()
-     
-      const child = spawn('npm', ['i', '-depth', '0'], { stdio: 'inherit' })
+      
+
       console.log(chalk.green('success!'))
     })
     
