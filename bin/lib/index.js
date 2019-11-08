@@ -8,7 +8,8 @@ const path = require('path')
 const step = require('./step')
 const icon = require('./icon')
 const pk = require(path.resolve(__dirname,'../../package.json'))
-const fs = require('fs')
+const ejs = require('ejs')
+const fs = require('fs-extra');
 
 const checkDir = (dirPath) => {
   try {
@@ -21,19 +22,20 @@ const checkDir = (dirPath) => {
 
 const create = (promptList, dir) => {
   inquirer.prompt(promptList).then((answers) => {
-    fs.readFile(path.resolve(__dirname, './.zarc.js'), 'utf-8', function(err, data) {
-        if (err) {
-            throw err;
-        }
-        console.log(data);
-        fs.writeFile(`${process.cwd()}/${dir}/.zarc.js`, data, { 'flag': 'a' }, function(err) {
-            if (err) {
-                throw err;
-            }
-            console.log('ok');
-        })
+    
+    // fs.readFile(path.resolve(__dirname, './.zarc.js'), 'utf-8', function(err, data) {
+    //     if (err) {
+    //         throw err;
+    //     }
+    //     console.log(data);
+    //     fs.writeFile(`${process.cwd()}/${dir}/.zarc.js`, data, { 'flag': 'a' }, function(err) {
+    //         if (err) {
+    //             throw err;
+    //         }
+    //         console.log('ok');
+    //     })
 
-    })
+    // })
     // fs.writeFile('./.zarc.js', answers, { 'flag': 'a' }, function(err) {
     //     if (err) {
     //         throw err;
