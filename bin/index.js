@@ -85,8 +85,8 @@ async function doit (answer, name) {
   await utils.install(__PATH__,'npm')
   
   const CloudEvent = require('easy-plugin-cloudevent')
-  console.log(CloudEvent)
-  CloudEvent(__PATH__)
+
+  await CloudEvent(__PATH__)
   
   console.log("安装完成!")
   //拷贝文件
@@ -147,7 +147,7 @@ async function doit (answer, name) {
   //   // );
 
   // })
-  // shell.exit(1);
+  shell.exit(1);
 }
 
 //设置xflow

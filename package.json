@@ -22,7 +22,7 @@
     "log": "^6.0.0",
     "path": "^0.12.7",
     "shelljs": "^0.8.3",
-    "easy-plugin-cloudevent": "^1.0.2"
+    "easy-plugin-cloudevent": "^1.0.3"
   },
   "devDependencies": {
     "download-git-repo": "^3.0.2",
