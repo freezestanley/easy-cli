@@ -1,4 +1,4 @@
-const Config = require('webpack-chain')
+// const Config = require('webpack-chain')
 const path = require('path')
 const ejs = require('ejs')
 const fs = require('fs-extra');

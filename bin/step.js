@@ -58,31 +58,36 @@ const first = {
     name: 'select',
     prefix: icon.tool,
     choices: [
+      // {
+      //   key: "vuex",
+      //   name: "Vuex",
+      //   value: "vuex"
+      // },
+      // {
+      //   key: "router",
+      //   name: "Router",
+      //   value: "router",
+      //   checked: true
+      // },
+      // {
+      //   key: "typeScript",
+      //   name: "TypeScript",
+      //   value: "typeScript"
+      // },
+      // {
+      //   key: "Css",
+      //   name: "CSS Pre-processors",
+      //   value: "css"
+      // },
+      // {
+      //   key: "Formatter",
+      //   name: "Linter / Formatter",
+      //   value: "formatter"
+      // },
       {
-        key: "vuex",
-        name: "Vuex",
-        value: "vuex"
-      },
-      {
-        key: "router",
-        name: "Router",
-        value: "router",
-        checked: true
-      },
-      {
-        key: "typeScript",
-        name: "TypeScript",
-        value: "typeScript"
-      },
-      {
-        key: "Css",
-        name: "CSS Pre-processors",
-        value: "css"
-      },
-      {
-        key: "Formatter",
-        name: "Linter / Formatter",
-        value: "formatter"
+        key: "cloudEvent",
+        name: "cloudEvent",
+        value: "cloudEvent"
       },
       {
         key: "zarmui",
@@ -138,31 +143,31 @@ const first = {
     name: 'select',
     prefix: icon.tool,
     choices: [
-      { 
-        key: "redux",
-        name: "redux",
-        value: "redux"
-      },
-      {
-        key: "router",
-        name: "react-router-dom",
-        value: "router"
-      },
-      {
-        key: "typeScript",
-        name: "typeScript",
-        value: "typeScript"
-      },
-      {
-        key: "css",
-        name: "CSS Pre-processors",
-        value: "css"
-      },
-      {
-        key: "formatter",
-        name: "Linter / Formatter",
-        value: "formatter"
-      },
+      // { 
+      //   key: "redux",
+      //   name: "redux",
+      //   value: "redux"
+      // },
+      // {
+      //   key: "router",
+      //   name: "react-router-dom",
+      //   value: "router"
+      // },
+      // {
+      //   key: "typeScript",
+      //   name: "typeScript",
+      //   value: "typeScript"
+      // },
+      // {
+      //   key: "css",
+      //   name: "CSS Pre-processors",
+      //   value: "css"
+      // },
+      // {
+      //   key: "formatter",
+      //   name: "Linter / Formatter",
+      //   value: "formatter"
+      // },
       {
         key: "zarmui",
         name: "Zarm ui",

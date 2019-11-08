@@ -1,2 +1,0 @@
-# easy-cli
-easy-cli
