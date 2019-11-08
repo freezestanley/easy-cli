@@ -1,0 +1,87 @@
+// scss全局变量，其他文件都可以直接访问
+$theme: #00BC70; // 主题颜色
+$success: #00BC70; // 成功
+$warning: #EC9131; // 警告
+$error: #FF5050; // 错误
+
+// 文字系列颜色
+$titleColor: #343434; // 标题、输入框、表头
+$textColor: #616161; // 正文（表格数据）表格中的文字颜色
+$text1Color: #909090; // disabled 颜色
+$text2Color: #bcbcbc; // placeholder文字
+$border: #e6e6e6; // 分隔线
+$lightTip: #f2f2f2; // 弱提示
+$bgColor: #fafafa; // 背景色
+
+// 5个业务颜色 + 5种角色颜色
+$quota: rgba(0, 188, 112, 1);
+$quotaBg: rgba(0, 188, 112, 0.1);
+$quotaHover: rgba(0, 188, 112, 0.3);
+$issue: rgba(64, 141, 255, 1);
+$issueBg: rgba(64, 141, 255, 0.1);
+$issueHover: rgba(64, 141, 255, 0.3);
+$transfer: rgba(75, 211, 238, 1);
+$transferBg: rgba(75, 211, 238, .1);
+$transferHover: rgba(75, 211, 238, .3);
+$loan: rgba(63, 179, 255, 1);
+$loanBg: rgba(63, 179, 255, .1);
+$loanHover: rgba(63, 179, 255, .3);
+$repay: rgba(237, 146, 85, 1);
+$repayBg: rgba(237, 146, 85, .1);
+$repayHover: rgba(237, 146, 85, .3);
+
+// 表意义带感情的颜色
+$disabled: $text1Color; // 禁用、失效等状态
+$wait: $error; // 待办（待我办）
+$forbid: $text1Color; // 账号权限管理客户特殊要求的颜色
+$hover: rgba(0, 188, 112, 0.8);
+$active: hsl(156, 100%, 32.9%);
+$info: #c0ccda; // 普通信息
+$normal: #58a5ff;
+// 表格中的状态颜色
+$finish: $titleColor; // 完成
+$ing: $error; // 进行中
+$close: $text1Color; // 失败或者驳回
+
+// 功能颜色
+$borderColor: #e6e6e6;
+$labelColor: $textColor; // label文字颜色
+$tipColor: $text2Color; // 提示文字（如：文件上传jpg）
+$placeholder: $text2Color;
+
+// 其他变量
+$pageBg: #fff; // 页面背景颜色
+// navbar
+$navBg: #fff; // #1a202e;
+$nav-height: 64px;
+$reverse: $titleColor;
+
+$theme-mid: #7FDDB7; // 次一级的主题颜色
+$theme-light: #E5F8F0; // 浅主题颜色
+// sidebar
+$menuText: #585963;
+$menuActiveText: $theme;
+$subMenuActiveText: $theme; //https://github.com/ElemeFE/element/issues/12951
+$subMenuActiveBg: #ffffff;
+$menuBg: $lightTip;
+$menuHover: $theme-light;
+$subMenuBg: $bgColor;
+$subMenuHover: $theme-light;
+$sideBarWidth: 200px;
+$hideSideBarWidth: 60px;
+$activeMenuBorderWidth: 6px;
+// the :export directive is the magic sauce for webpack
+// https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
+:export {
+    baseTheme: $theme;
+    menuText: $menuText;
+    menuActiveText: $menuActiveText;
+    subMenuActiveText: $subMenuActiveText;
+    subMenuActiveBg: $subMenuActiveBg;
+    menuBg: $menuBg;
+    menuHover: $menuHover;
+    subMenuBg: $subMenuBg;
+    subMenuHover: $subMenuHover;
+    sideBarWidth: $sideBarWidth;
+    hideSideBarWidth: $hideSideBarWidth;
+}

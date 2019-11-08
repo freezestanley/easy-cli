@@ -1,0 +1,31 @@
+/* 上传组件的样式 */
+.uploader-container {
+  display: block;
+  .img-class {
+    width: 270px;
+    height: 135px;
+    object-fit: contain;
+  }
+  :global {
+    .ant-upload.ant-upload-drag {
+      border-style: solid;
+      width: 270px;
+      height: 135px;
+    }
+    .ant-upload.ant-upload-drag .ant-upload-btn {
+      width: 270px;
+      height: 135px;
+      padding: 0;
+    }
+    .ant-upload.ant-upload-drag p.ant-upload-drag-icon {
+      margin-bottom: 0;
+    }
+    .ant-upload.ant-upload-drag p.ant-upload-text {
+      font-size: 14px;
+    }
+    .ant-upload.ant-upload-drag p.ant-upload-hint {
+      font-size: 12px;
+      word-break: break-all;
+    }
+  }
+}

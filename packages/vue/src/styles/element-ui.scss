@@ -1,0 +1,305 @@
+ @import './element-over.scss';
+ // cover some element-ui styles
+    .el-breadcrumb__inner,
+    .el-breadcrumb__inner a {
+        font-weight: 400 !important;
+    }
+
+    .el-upload {
+        input[type="file"] {
+            display: none !important;
+        }
+    }
+    // 全局设置input
+    .el-input input {
+        color: $titleColor;
+        background-color: #fff !important;
+        &:-webkit-autofill {
+          -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+          box-shadow: 0 0 0px 1000px #fff inset !important;
+          // -webkit-text-fill-color: #fff !important;
+        }
+        .el-input__inner::placeholder {
+          color: $placeholder;
+        }
+    }
+
+    .el-upload__input {
+        display: none;
+    }
+
+    // to fixed https://github.com/ElemeFE/element/issues/2461
+    .el-dialog {
+        transform: none;
+        left: 0;
+        position: relative;
+        margin: 0 auto;
+        .el-dialog__close.el-icon.el-icon-close {
+            font-size: 20px;
+        }
+    }
+
+    // refine element ui upload
+    .upload-container {
+        .el-upload {
+            width: 100%;
+            .el-upload-dragger {
+                width: 100%;
+                height: 200px;
+            }
+        }
+    }
+
+    // dropdown
+    .el-dropdown-menu {
+        a {
+            display: block
+        }
+    }
+
+    .el-form-item__label-wrap {
+        color: red !important;
+    }
+
+    // 表单label颜色
+    .el-form-item--small .el-form-item__label {
+        color: $labelColor !important;
+        font-weight: 400;
+        font-size: 14px;
+    }
+
+    // 去掉require的小红点
+    .el-form-item--small .el-form-item__label {
+        &::before {
+            display: none;
+        }
+    }
+
+    // 下拉框 选中时的样式
+    .el-select-dropdown__item.selected {
+        font-weight: normal;
+        background-color: $theme;
+        color: #fff;
+    }
+
+    .el-select-dropdown__item.is-disabled:hover {
+        color: $theme;
+        background-color: #fff;
+    }
+
+    .token-option {
+        height: 84px;
+        line-height: 27px;
+        border-bottom: 1px solid $borderColor;
+        font-size: 13px;
+        &:last-child {
+            border-width: 0;
+        }
+    }
+
+    // 下拉框选项离框的距离
+    .el-popper[x-placement^="bottom"] {
+        margin-top: 8px;
+    }
+
+    // 弹窗body的padding修改
+    .el-dialog__body {
+      padding: 0px 30px 20px;
+    }
+    .el-drawer__header span {
+      font-weight: 600;
+      font-size: 22px;
+      color: $titleColor;
+    }
+    .el-drawer__body {
+      padding: 0px 30px 20px;
+      overflow-y: auto;
+    }
+    // 表格相关样式重置
+    // 重置所有table的表头背景颜色
+    .el-table__header thead tr th {
+        background-color: $theme-light;
+        color: $titleColor;
+    }
+
+    // 表格单元格左右内间距12px
+    .el-table .cell {
+        padding-left: 12px;
+        padding-right: 12px;
+        .el-button--text.el-button--small {
+            font-weight: 400;
+        }
+    }
+
+    .el-table__body-wrapper .el-table__body tbody td {
+        font-size: 13px;
+        color: $textColor;
+    }
+
+    .el-table__body tr.hover-row>td,
+    .el-table__body tr.hover-row.current-row>td {
+        background-color: $pageBg;
+    }
+
+    .el-table__body tr.current-row>td {
+        background-color: $pageBg;
+    }
+
+    // 登录页输入框样式
+    .login-input {
+        .el-input__inner {
+            // text-indent: 18px;
+            // background-color: $theme-light;
+        }
+        .el-form-item.is-success .el-input__inner {
+            border-color: #DCDFE6 !important;
+        }
+    }
+
+    // message 消息 背景颜色重置
+    .el-message--info,
+    .el-message--success,
+    .el-message--warning,
+    .el-message--error {
+        background-color: #fff;
+    }
+
+    .el-icon-arrow-down:before {
+        content: '\e790';
+        font-size: 16px;
+    }
+
+    .el-message {
+        border: 1px solid $theme-light !important;
+        box-shadow: 0px 0px 8px 0px rgba(101, 85, 246, 0.16);
+    }
+
+    .el-tooltip__popper.is-dark {
+        max-width: 400px;
+        background-color: rgb(255, 255, 255) !important;
+        color: $titleColor;
+        box-shadow: 0px 0px 8px 0px rgba(101, 85, 246, 0.16);
+        .popper__arrow,
+        .popper__arrow::after {
+            border-top-color: rgb(255, 255, 255);
+            -webkit-filter: drop-shadowrgb(255, 255, 255);
+            filter: drop-shadowrgb(255, 255, 255);
+        }
+    }
+
+    // 多选下拉框样式覆盖
+    .el-select .el-tag {
+        background-color: $theme-light;
+        color: $textColor;
+    }
+
+    .el-select-dropdown.is-multiple .el-select-dropdown__item.selected {
+        font-weight: normal;
+        background-color: $theme;
+        color: #fff;
+    }
+
+    .el-select-dropdown.is-multiple .el-select-dropdown__item.selected:hover,
+    .el-select-dropdown__item.selected:hover {
+        color: $theme;
+        background-color: #fff;
+    }
+
+    .el-select-dropdown__item:hover {
+        color: $theme;
+    }
+
+    .el-tabs__header.is-top {
+        margin-bottom: 20px;
+    }
+
+    .el-upload-list--picture-card .el-upload-list__item {
+        border-color: #E0E6ED;
+        border-width: 0px;
+    }
+
+    // 上传文件的提示文字颜色
+    .el-upload__tip {
+        color: $tipColor;
+    }
+
+    // 筛选条件 表单样式
+    .filter-form {
+        .el-row:last-child {
+            // background-color: yellow;
+            .el-col:last-child {
+                // background-color: red;
+                .el-form-item.el-form-item--small .el-form-item__content {
+                    width: 100%;
+                    padding-left: 34px;
+                    // background-color: blue;
+                }
+            }
+        }
+        .el-row {
+            width: 100%;
+            margin-left: 0px !important;
+            .el-col {
+                // border: 2px solid gray;
+                // &:nth-child(2) {
+                //     text-align: center;
+                // }
+                &:last-child {
+                    text-align: right;
+                    padding-right: 0px !important;
+                }
+                // &:last-child {
+                //     text-align: right;
+                //     .el-form-item__label {
+                //         text-align: left;
+                //     }
+                // }
+                .el-form-item__label {
+                    width: 96px;
+                    text-align: right;
+                }
+                .option-btns .el-form-item__content {
+                    display: flex;
+                    justify-content: flex-end;
+                    .opt-add-btn {
+                        flex: 1;
+                        text-align: right;
+                    }
+                }
+                .el-form-item.el-form-item--small {
+                    width: 100%;
+                    min-width: 320px;
+                    // border: 1px solid blue;
+                    // .el-form-item__content {
+                        // width: calc(100% - 100px);
+                        // border: 1px solid fuchsia;
+                    // }
+                    .el-input,
+                    .el-range-editor--small.el-input__inner,
+                    .el-select--small {
+                        min-width: 230px;
+                        width: 100%;
+                        // border: 1px solid #000;
+                    }
+                    .filter-btn-right {
+                        margin-left: 70px;
+                    }
+                    &:last-child {
+                        margin-right: 0;
+                    }
+                    // 时间选择器 宽度样式
+                    .el-range-editor--small.el-input__inner {
+                        min-width: 230px;
+                        .el-input__icon.el-range__close-icon {
+                            display: none;
+                        }
+                    }
+                    .el-select {
+                        &+.el-input {
+                            width: 100%;
+                        }
+                    }
+                }
+            }
+        }
+    }

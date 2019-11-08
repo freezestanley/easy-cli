@@ -10,14 +10,6 @@ config.mode(env.DEVELOPMENT)
 // devtool
 config.devtool('cheap-module-eval-source-map')
 
-config.module.rule('sass')
-.use('style-loader')
-.loader('style-loader').before('css').end()
-
-config.module.rule('less')
-.use('style-loader')
-.loader('style-loader').before('css').end()
-
 // plugin
 config.plugin('htmlwebpackplugin')
     .use(HtmlWebpackPlugin, [
@@ -47,7 +39,17 @@ config.plugin('htmlwebpackplugin')
   .use(webpack.HotModuleReplacementPlugin).end()
 // devServer
 config.devServer.contentBase('../dist')
+  // .publicPath('/')
   .port(8080)
+  .proxy({
+    '/apiMid': {
+      target: 'http://17225-finance-hil-hil-ops.test.za-tech.net/',
+      changeOrigin: true,
+      pathRewrite: {
+        '^/apiMid': ''
+      }
+    }
+  })
   .inline(true)
   .historyApiFallback(true)
   .hot(true)

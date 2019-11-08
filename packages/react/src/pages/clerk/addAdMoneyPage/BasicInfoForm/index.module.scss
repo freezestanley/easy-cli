@@ -1,0 +1,17 @@
+@import 'styles/variables.scss';
+
+.form-class {
+  width: 614px;
+  :global {
+    .ant-form-item {
+      margin-bottom: 20px;
+    }
+  }
+}
+
+.title {
+  color: $fontColor-3;
+  line-height:22px;
+  font-size:16px;
+  margin: 42px 0 32px;
+}

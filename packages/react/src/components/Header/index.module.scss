@@ -1,0 +1,13 @@
+@import 'styles/variables.scss';
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .system-name {
+    color: $fontColor-1;
+  }
+  .right-container {
+
+  }
+}

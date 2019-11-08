@@ -1,0 +1,243 @@
+@import './variables.scss';
+@import './mixin.scss';
+@import './transition.scss';
+@import './element-ui.scss';
+@import './sidebar.scss';
+body {
+    height: 100%;
+    position: relative;
+    background-color: $pageBg;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+}
+
+label {
+    font-weight: 700;
+}
+
+html {
+    height: 100%;
+    box-sizing: border-box;
+}
+
+#app {
+    height: 100%;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+a:focus,
+a:active {
+    outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+    cursor: pointer;
+    color: inherit;
+    text-decoration: none;
+}
+
+div:focus {
+    outline: none;
+}
+
+.fr {
+    float: right;
+}
+
+.fl {
+    float: left;
+}
+
+.clearfix {
+    &:after {
+        visibility: hidden;
+        display: block;
+        font-size: 0;
+        content: ' ';
+        clear: both;
+        height: 0;
+    }
+}
+
+// main-container global css
+.app-container {
+    padding: 20px;
+}
+
+//常用字号
+.fs12 {
+    font-size: 12px;
+}
+
+.fs13 {
+    font-size: 13px;
+}
+
+.fs14 {
+    font-size: 14px;
+}
+
+.fs16 {
+    font-size: 16px;
+}
+
+.fs18 {
+    font-size: 18px;
+}
+
+
+/* 对齐 */
+
+.tar {
+    text-align: right;
+}
+
+.tac {
+    text-align: center;
+}
+
+.cursor {
+    cursor: pointer;
+}
+
+
+/* display */
+
+.df {
+    display: flex;
+}
+
+.df-wrap {
+    flex-wrap: wrap;
+}
+
+.db {
+    display: block;
+}
+
+.dib {
+    display: inline-block;
+}
+
+
+/* 常用功能 */
+
+.nowarp {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* 禁止换行,末尾省略 */
+
+.nowarp2 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+}
+
+.ellipsis {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.w100 {
+    width: 100%;
+}
+
+// 常用颜色
+.theme {
+    color: $theme;
+    &:hover {
+        color: $theme;
+    }
+}
+
+.primary {
+    color: $theme;
+}
+
+.success {
+    color: $success;
+}
+
+.warning {
+    color: $warning;
+}
+
+.wait {
+    color: $wait;
+}
+// 表格中的 三种状态颜色
+.finish {
+  color: $finish;
+}
+.ing {
+  color: $ing;
+}
+.close {
+  color: $close;
+}
+
+.error {
+    color: $error;
+}
+
+.disabled {
+    color: $disabled;
+}
+
+.forbid {
+    color: $forbid;
+}
+
+.hover {
+    color: $hover;
+}
+
+.active {
+    color: $active;
+}
+
+.normal {
+    color: $normal;
+}
+
+.info {
+    color: $info;
+}
+
+.fff {
+    color: #fff;
+}
+
+.textTitle {
+    color: $titleColor;
+}
+
+.download-button {
+    color: $theme;
+}
+
+.ellipsis {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.pb-10 {
+    padding-bottom: 10px;
+}

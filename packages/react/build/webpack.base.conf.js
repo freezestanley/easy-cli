@@ -2,6 +2,8 @@
 const Config = require('webpack-chain')
 const path = require('path')
 const config = new Config()
+const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent')
+
 // entry output 
 config
   .entry('index')
@@ -10,7 +12,7 @@ config
   .output
     .path(path.resolve(__dirname, '../dist'))
     .filename('[name].[hash:8].js')
-    // .publicPath()
+    .publicPath('/')
     .library('other')
     .libraryTarget('umd')
 
@@ -25,6 +27,10 @@ config.resolve.extensions.end()
 
 // alias
 config.resolve.alias.set('react-native','react-native-web')
+
+// modules
+// config.resolve.modules.add('node_modules').add('src')
+config.resolve.modules.add('node_modules').add(path.resolve(__dirname, '../src'))
 
 // externals
 config.externals({
@@ -79,63 +85,221 @@ config.module.rule('ts')
     happyPackMode: true
   }).end()
 
-
-config.module.rule('less')
-  .test(/\.less$/)
+// css
+config.module.rule('css')
+  .test(/\.css$/)
+  .exclude.add(/\.module\.css$/).end()
+  .use('style')
+  .loader('style-loader')
+  .end()
   .use('css')
   .loader('css-loader')
+  .options({
+    importLoaders: 1
+  })
+  .end()
+
+// cssModule
+config.module.rule('cssModule')
+  .test(/\.module\.css$/)
+  .use('style')
+  .loader('style-loader')
+  .end()
+  .use('css')
+  .loader('css-loader')
+  .options({
+    importLoaders: 1,
+    modules: true,
+    getLocalIdent: getCSSModuleLocalIdent,
+  })
+  .end()
+
+ 
+// sass
+config.module.rule('sass')
+  .test(/\.(scss|sass)$/)
+  .exclude.add(/\.module\.(scss|sass)$/).end()
+  .use('style')
+  .loader('style-loader').end()
+  .use('css')
+  .loader('css-loader')
+  .options({
+    importLoaders: 2
+  })
   .end()
   .use('postcss')
   .loader('postcss-loader')
   .options({
     ident: 'postcss',
     plugins: (loader) => [
-      require('postcss-preset-env')(),
+      require('postcss-flexbugs-fixes')(),
+      require('postcss-preset-env')({
+        autoprefixer: {
+          flexbox: 'no-2009',
+        },
+        stage: 3,
+      }),
       require('postcss-normalize')({ forceImport: true }),
-      require('postcss-cssnext')(),
-      require('postcss-import')({ root: loader.resourcePath }),
-      require('postcss-selector-namespace')({ selfSelector: ':namespace', namespace: `` })
-    ]})
+      require('postcss-cssnext')({
+        features: {
+          customProperties: {
+            warnings: false
+          }
+        }
+      }),
+      // require('postcss-import')({ root: loader.resourcePath }),
+      // require('postcss-selector-namespace')({ selfSelector: ':namespace', namespace: `` })
+    ]
+  }).end()
+  .use('sass')
+  .loader('sass-loader')
   .end()
+  // .use('js2style')
+  // .loader('js-to-styles-var-loader').end()
+
+// sassModule
+config.module.rule('sassModule')
+  .test(/\.module\.(scss|sass)$/)
+  .use('style')
+  .loader('style-loader').end()
+  .use('css')
+  .loader('css-loader')
+  .options({
+    importLoaders: 2,
+    modules: true,
+    getLocalIdent: getCSSModuleLocalIdent,
+  })
+  .end()
+  .use('postcss')
+  .loader('postcss-loader')
+  .options({
+    ident: 'postcss',
+    plugins: (loader) => [
+      require('postcss-flexbugs-fixes')(),
+      require('postcss-preset-env')({
+        autoprefixer: {
+          flexbox: 'no-2009',
+        },
+        stage: 3,
+      }),
+      require('postcss-normalize')({ forceImport: true }),
+      require('postcss-cssnext')({
+        features: {
+          customProperties: {
+            warnings: false
+          }
+        }
+      }),
+      // require('postcss-import')({ root: loader.resourcePath }),
+      // require('postcss-selector-namespace')({ selfSelector: ':namespace', namespace: `` })
+    ]
+  }).end()
+  .use('sass')
+  .loader('sass-loader')
+  .end()
+  // .use('js2style')
+  // .loader('js-to-styles-var-loader').end()
+
+// less
+config.module.rule('less')
+  .test(/\.less$/)
+  .exclude.add(/\.module\.less$/).end()
+  .use('style')
+    .loader('style-loader').end()
+  .use('css')
+    .loader('css-loader')
+    .options({
+      importLoaders: 2
+    })
+    .end()
+  // .use('postcss')
+  //   .loader('postcss-loader')
+  //   .options({
+  //     ident: 'postcss',
+  //     plugins: (loader) => [
+  //       require('postcss-flexbugs-fixes')(),
+  //       require('postcss-preset-env')({
+  //         autoprefixer: {
+  //           flexbox: 'no-2009',
+  //         },
+  //         stage: 3,
+  //       }),
+  //       require('postcss-normalize')({ forceImport: true }),
+  //       require('postcss-cssnext')({
+  //         features: {
+  //           customProperties: {
+  //             warnings: false
+  //           }
+  //         }
+  //       }),
+  //       // require('postcss-import')({ root: loader.resourcePath }),
+  //       // require('postcss-selector-namespace')({ selfSelector: ':namespace', namespace: `` })
+  //     ]}).end()
+  .use('less')
+    .loader('less-loader')
+    .options({
+      javascriptEnabled: true,
+      modifyVars: {
+        'primary-color': '#4FC58B',
+      }
+    }).end()
+  // .use('js2style')
+  //   .loader('js-to-styles-var-loader').end()
+
+// lessModule
+config.module.rule('lessModule')
+  .test(/\.module\.less$/)
+  .use('style')
+  .loader('style-loader').end()
+  .use('css')
+  .loader('css-loader')
+  .options({
+    importLoaders: 2,
+    modules: true,
+    getLocalIdent: getCSSModuleLocalIdent,
+  })
+  .end()
+  // .use('postcss')
+  // .loader('postcss-loader')
+  // .options({
+  //   ident: 'postcss',
+  //   plugins: (loader) => [
+  //     require('postcss-flexbugs-fixes')(),
+  //     require('postcss-preset-env')({
+  //       autoprefixer: {
+  //         flexbox: 'no-2009',
+  //       },
+  //       stage: 3,
+  //     }),
+  //     require('postcss-normalize')({ forceImport: true }),
+  //     require('postcss-cssnext')({
+  //       features: {
+  //         customProperties: {
+  //           warnings: false
+  //         }
+  //       }
+  //     }),
+  //     // require('postcss-import')({ root: loader.resourcePath }),
+  //     // require('postcss-selector-namespace')({ selfSelector: ':namespace', namespace: `` })
+  //   ]
+  // }).end()
   .use('less')
   .loader('less-loader')
-  .end()
-  .use('js2style')
-  .loader('js-to-styles-var-loader')
-  .end()
-
-config.module.rule('sass')
-  .test(/\.s[ac]ss$/i)
-  .use('css')
-  .loader('css-loader').end()
-  .use('postcss')
-  .loader('postcss-loader')
   .options({
-    ident: 'postcss',
-    plugins: (loader) => [
-      require('postcss-preset-env')(),
-      require('postcss-normalize')({ forceImport: true }),
-      require('postcss-cssnext')(),
-      require('postcss-import')({ root: loader.resourcePath }),
-      require('postcss-selector-namespace')({ selfSelector: ':namespace', namespace: `` })
-    ]}).end()
-  .use('sass')
-  .loader('sass-loader').end()
-  .use('js2style')
-  .loader('js-to-styles-var-loader').end()
+    javascriptEnabled: true,
+  }).end()
+  // .use('js2style')
+  //   .loader('js-to-styles-var-loader').end()
+
 
 config.module.rule('images')
-  .test(/\.(png|jpg|gif)$/i)
-  .use('urlloader')
+  .test(/\.(png|jpg|gif|svg)$/i)
+  .use('url')
   .loader('url-loader').options({
     limit: 8192,
     quality: 85,
-    name: '../dist/images/[name].[hash:8].[ext]',
+    name: 'images/[name].[hash:8].[ext]',
   }).end()
-  
-config.plugin('DefinePlugin')
-  .use(webpack.DefinePlugin, [
-  {
-    
-  }]).end()
+
+
 module.exports = config

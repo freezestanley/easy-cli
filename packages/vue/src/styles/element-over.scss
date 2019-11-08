@@ -1,0 +1,40 @@
+.el-input__inner {
+  border-width: 0;
+  border-bottom-width: 1px;
+  border-radius: 0;
+}
+.el-input__suffix .el-input__suffix-inner .el-select__caret::before {
+  content: '\e78f';
+}
+.filter-form .el-row .el-col {
+  .el-form-item {
+    position: relative;
+    .el-form-item__label {
+      position: absolute;
+      left: 0;
+      width: 96px;
+      z-index: 10;
+    }
+    .el-form-item__content {
+      width: 100%;
+      // .el-select,
+      .el-date-editor,
+      .el-input__inner,
+      .el-range-editor--daterange {
+        padding-left: 96px;
+        width: 100%;
+      }
+      .el-select {
+        width: 100%;
+        position: absolute;
+        left: 0;
+        .el-input {
+          width: 100%;
+          position: absolute;
+          left: 0;
+          padding-left: 0;
+        }
+      }
+    }
+  }
+}

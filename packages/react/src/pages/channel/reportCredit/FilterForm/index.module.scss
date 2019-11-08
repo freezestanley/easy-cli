@@ -1,0 +1,18 @@
+.form-class {
+  // 4个字的长度
+  .labe-width-4 {
+    :global {
+      .ant-form-item-label {
+        width: 66px;
+      }
+    }
+  }
+  // 6个字的长度
+  .labe-width-6 {
+    :global {
+      .ant-form-item-label {
+        width: 94px;
+      }
+    }
+  }
+}

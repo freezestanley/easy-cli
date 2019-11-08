@@ -1,0 +1,10 @@
+@import 'styles/variables.scss';
+
+.anchor-title {
+  background: $bgColor-1;
+  line-height: 42px;
+  color: $fontColor-3;
+  font-weight:500;
+  padding-left: 9px;
+  margin-bottom: 20px;
+}

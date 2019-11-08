@@ -96,12 +96,16 @@ config
       threshold: 10240,
       minRatio: 0.7
     }]).end()
-  .plugin('PurifyCSS')
-    .use(PurifyCSS, [{
-      paths: glob.sync([
-        path.resolve(__dirname, '../src/*.js')
-      ])
+  .plugin('DefinePlugin')
+    .use(webpack.DefinePlugin, [{
+    
     }]).end()
+  // .plugin('PurifyCSS')
+  //   .use(PurifyCSS, [{
+  //     paths: glob.sync([
+  //       path.resolve(__dirname, '../src/*/*.js')
+  //     ])
+  //   }]).end()
   .plugin('MiniCssExtractPlugin')
     .use(MiniCssExtractPlugin, [{
       filename: "[name].[contenthash:8].css",
