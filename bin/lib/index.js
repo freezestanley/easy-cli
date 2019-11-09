@@ -3,7 +3,7 @@ const command = require('commander')
 const program = new command.Command()
 const inquirer = require('inquirer')
 const log = require("log")
-const chalk = require('chalk')
+
 const path = require('path')
 const step = require('./step')
 const icon = require('./icon')
@@ -11,51 +11,12 @@ const pk = require(path.resolve(__dirname,'../../package.json'))
 const ejs = require('ejs')
 const fs = require('fs-extra')
 const perset = require('./perset')
-const spawn = require('cross-spawn')
-const execa = require('execa')
 const utils = require('./utils')
 
-const checkDir = (dirPath) => {
-  try {
-    fs.accessSync(dirPath)
-    console.error(chalk.red(`${icon.wow} 该项目已存在`))
-  } catch (error) {
-    return true 
-  }
+
+async function create (promptList, dir) {
+  return await inquirer.prompt(promptList)
 }
-
-const create = (promptList, dir) => {
-  inquirer.prompt(promptList).then((answers) => {
-    fs.mkdirpSync(dir)
-    if (answers.perset === 'default') {
-      answers.select = answers.type === 'vue' ? perset.vue : perset.react
-    }
-
-    ejs.renderFile(path.join(__dirname, './template/zarc.js'), { 
-      plugin: answers.select,
-      mft: answers.mft,
-      type: answers.type
-    }).then(res=>{
-      fs.writeFileSync(
-        `${process.cwd()}/${dir}/.zarc.js`,
-        res
-      );
-    })
-    ejs.renderFile(path.join(__dirname, './template/package.json'), { 
-      name: dir
-    }).then(res=>{
-      fs.writeFileSync(
-        `${process.cwd()}/${dir}/package.json`,
-        res
-      )
-      
-
-      console.log(chalk.green('success!'))
-    })
-    
-  })
-}
-
 // 获取版本
 program
   .version(pk.version)
@@ -63,7 +24,8 @@ program
 program
   .command('create <project>')
   .action((dir, otherDirs) => {
-    const result = checkDir(`${process.cwd()}/${dir}`)
+    // 检查文件夹是否已存在
+    const result = utils.checkDir(`${process.cwd()}/${dir}`)
     if (result) {
       create([
         step.first,
@@ -73,7 +35,43 @@ program
         step.react1,
         step.react2
       ], 
-      process.argv[3])
+      process.argv[3]).then((answers) => {
+        fs.mkdirpSync(dir)
+
+        if (answers.perset === 'default') {
+          answers.select = answers.type === 'vue' ? perset.vue : perset.react
+        }
+        
+        Promise.all(
+          [
+            ejs.renderFile(path.join(__dirname, './template/zarc.js'), { 
+              plugin: answers.select,
+              mft: answers.mft,
+              type: answers.type
+            }),
+            ejs.renderFile(path.join(__dirname, './template/package.json'), { 
+              name: dir
+            })
+          ]
+        ).then((res) => {
+          fs.writeFileSync(
+            `${process.cwd()}/${dir}/.zarc.js`,
+            res[0]
+          )
+          fs.writeFileSync(
+            `${process.cwd()}/${dir}/package.json`,
+            res[1]
+          )
+          // npm install
+          utils.install(`${process.cwd()}/${dir}`).then((success) => {
+            utils.init(`${process.cwd()}/${dir}`).catch(err => {
+              console.log(err)
+            })
+          }, (fail) => {
+            console.log(fail)
+          })
+        })
+      })
     }
   })
 
