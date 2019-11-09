@@ -44,7 +44,7 @@ async function init (dir) {
     return await new Promise((resolve, reject) => {
         const spinner = new ora({
             discardStdin: false,
-            text: 'eyweb -h start',
+            text: 'eyweb init',
           })
         const subprocess = execa('npx',['eyweb', 'init'],{
             cwd: dir + '/',
@@ -52,7 +52,11 @@ async function init (dir) {
         });
         subprocess.on('close', code => {
             if (code !== 0) {
-                spinner.text = 'init error'
+                spinner.text = `init error ${code}`
+                spinner.succeed()
+                subprocess.kill('SIGTERM', {
+                    forceKillAfterTimeout: 2000
+                })
                 reject(`command failed: eyweb init`)
                 return
             }

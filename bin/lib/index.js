@@ -37,7 +37,6 @@ program
       ], 
       process.argv[3]).then((answers) => {
         fs.mkdirpSync(dir)
-
         if (answers.perset === 'default') {
           answers.select = answers.type === 'vue' ? perset.vue : perset.react
         }
@@ -45,12 +44,13 @@ program
         Promise.all(
           [
             ejs.renderFile(path.join(__dirname, './template/zarc.js'), { 
-              plugin: answers.select,
+              plugin: ['less'],// answers.select,
               mft: answers.mft,
               type: answers.type
             }),
             ejs.renderFile(path.join(__dirname, './template/package.json'), { 
-              name: dir
+              name: dir,
+              plugin: ['less'], // answers.select
             })
           ]
         ).then((res) => {
@@ -64,9 +64,11 @@ program
           )
           // npm install
           utils.install(`${process.cwd()}/${dir}`).then((success) => {
+            // eyweb init
             utils.init(`${process.cwd()}/${dir}`).catch(err => {
               console.log(err)
             })
+
           }, (fail) => {
             console.log(fail)
           })
