@@ -44,9 +44,9 @@ async function init (dir) {
     return await new Promise((resolve, reject) => {
         const spinner = new ora({
             discardStdin: false,
-            text: 'eyweb init',
+            text: 'easy init',
           })
-        const subprocess = execa('npx',['eyweb', 'init'],{
+        const subprocess = execa('npx',['easy', 'init'],{
             cwd: dir + '/',
             stdio: ['inherit']
         });
@@ -63,7 +63,7 @@ async function init (dir) {
             subprocess.kill('SIGTERM', {
                 forceKillAfterTimeout: 2000
             })
-            spinner.text = 'eyweb done'
+            spinner.text = 'init done'
             spinner.succeed()
             resolve('success')
         })

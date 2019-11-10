@@ -44,13 +44,13 @@ program
         Promise.all(
           [
             ejs.renderFile(path.join(__dirname, './template/zarc.js'), { 
-              plugin: ['less'],// answers.select,
+              plugin: ['less', 'sass'],// answers.select,
               mft: answers.mft,
               type: answers.type
             }),
             ejs.renderFile(path.join(__dirname, './template/package.json'), { 
               name: dir,
-              plugin: ['less'], // answers.select
+              plugin: ['less', 'sass'], // answers.select
             })
           ]
         ).then((res) => {
