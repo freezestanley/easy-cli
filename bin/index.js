@@ -1,6 +1,6 @@
-#!/usr/bin/env node 
-const command = require('commander');
-const program = new command.Command();
+#!/usr/bin/env node
+const command = require('commander')
+const program = new command.Command()
 const inquirer = require('inquirer')
 const shell = require('shelljs')
 const chalk = require('chalk')
@@ -9,18 +9,16 @@ const step = require('./step')
 const icon = require('./icon')
 const utils = require('./utils')
 // const webpack = require('./wepackConfig')
-const pk = require(path.resolve(__dirname,'../package.json'))
+const pk = require(path.resolve(__dirname, '../package.json'))
 const fs = require('fs')
 
-async function doit (answer, name) {
+async function doit(answer, name) {
   if (!shell.which('git')) {
-    shell.echo('Sorry, this script requires git');
-    shell.exit(1);
+    shell.echo('Sorry, this script requires git')
+    shell.exit(1)
   }
 
-
-
-  const {select=['zarm','cloudEvent','xflow'], perset,type} = answer
+  const { select = [], type, xcode } = answer
   // const pkg = {
   //   name,
   //   version: '0.1.0',
@@ -37,9 +35,16 @@ async function doit (answer, name) {
   //     "node": ">=8.0.0"
   //   }
   // }
-  
+  let template = 'fragment-vue-master'
+  //react 模板
+  if (type == 'react') template = 'fragment-react-master'
+  //zarm模板
+  if (type == 'react' && select.indexOf('zarm')) template = 'fragment-react-zarm'
+  //zarm vue模板
+  if (type == 'vue' && select.indexOf('zarm')) template = 'fragment-react-zarm'
+
   const __PATH__ = `${process.cwd()}/${name}` //目标路径
-  // const __TEMPLATE_PATH__ = path.resolve(__dirname, '../packages/react/')
+  const __TEMPLATE_PATH__ = path.resolve(__dirname, `../packages/${template}/`)
 
   //判断框架
   // if(type=='vue'){
@@ -51,49 +56,69 @@ async function doit (answer, name) {
   //   if(perset=="default")dependencies.push('react-redux','react-router-dom')
   // }
   // cloudEvent
-  
-  utils.createFolder(__PATH__)
-  //获取git 模板
-  await utils.downloadTemplate(name,type,__PATH__)
-  //替换package
-  const pkgPath = path.join(__PATH__, 'package.json')
-  const pkg = utils.getPackage(pkgPath)
-  let devDependencies={}
-  let dependencies = {};
 
-  //加入插件进行安装
-  if((select||'').includes('cloudEvent')){
-    devDependencies={'za-plugin-cloudevent':'1.0.0'}
+  // utils.createFolder(__PATH__)
+  // 拷贝文件
+  utils.copyFolder(__TEMPLATE_PATH__, __PATH__)
+  // //获取git 模板
+  // await utils.downloadTemplate(name,type,__PATH__)
+  // //替换package
+  if (select.includes('static')) {
+    const pkgPath = path.join(__PATH__, 'package.json')
+    const pkg = utils.getPackage(pkgPath)
+    let devDependencies = {
+      'eslint-config-za': '2.1.0',
+      eslint: '6.5.1',
+      'babel-eslint': '10.0.3',
+      '@typescript-eslint/eslint-plugin': '2.5.0',
+      '@typescript-eslint/parser': '2.5.0',
+      'eslint-plugin-babel': '5.3.0',
+      'eslint-plugin-import': '2.18.2',
+      'eslint-plugin-jsx-a11y': '6.2.3',
+      'eslint-plugin-react': '7.16.0',
+      'eslint-plugin-react-hooks': '2.2.0',
+      'eslint-plugin-vue': '5.2.3',
+      typescript: '3.6.4'
+    }
+    pkg.devDependencies = { ...pkg.devDependencies, ...devDependencies }
+    pkg.scripts = {
+      ...pkg.scripts,
+      ...{
+        'lint:report': 'eslint --ext .jsx,.js src -f checkstyle -o report_zacc_eslint_js.xml; exit 0'
+      }
+    }
+    fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2))
   }
-  //react
-  if((select||'').includes('zarm') && type=="react")dependencies={'zarm':'1.1.1'}
-  //vue
-  if((select||'').includes('zarm') && type=="vue")dependencies={...dependencies,'zarm-vue':'1.6.1'}
 
-  pkg.devDependencies= {...pkg.devDependencies,...devDependencies}
-  pkg.dependencies= {...pkg.dependencies,...dependencies}
-  fs.writeFileSync(
-    pkgPath,
-    JSON.stringify(pkg, null, 2)
-  );
-  // xflow
-  // if(perset=='default' || (select||'').includes('xflow')){
-  //   installXflow(path.join(__PATH__, 'index.html'),true)
-  // }else{
-  //   installXflow(path.join(__PATH__, 'index.html'),false)
+  // let dependencies = {};
+
+  // //加入插件进行安装
+  // if((select||'').includes('cloudEvent')){
+  //   devDependencies={'za-plugin-cloudevent':'1.0.0'}
   // }
-  await utils.install(__PATH__,'npm')
-  
-  const CloudEvent = require('easy-plugin-cloudevent')
+  // //react
+  // if((select||'').includes('zarm') && type=="react")dependencies={'zarm':'1.1.1'}
+  // //vue
+  // if((select||'').includes('zarm') && type=="vue")dependencies={...dependencies,'zarm-vue':'1.6.1'}
 
-  await CloudEvent(__PATH__)
-  
-  console.log("安装完成!")
+  // pkg.dependencies= {...pkg.dependencies,...dependencies}
+
+  // xflow
+  if ((select || '').includes('xflow')) {
+    installXflow(path.join(__PATH__, 'public/index.html'), true, xcode)
+  } else {
+    installXflow(path.join(__PATH__, 'public/index.html'), false)
+  }
+  await utils.install(__PATH__, 'npm')
+
+  // const CloudEvent = require('easy-plugin-cloudevent')
+
+  // await CloudEvent(__PATH__)
+
+  // console.log("安装完成!")
   //拷贝文件
   // utils.copyFolder(__TEMPLATE_PATH__, __PATH__)
   // shell.exec(`cp -rf ${__TEMPLATE_PATH__} ${__PATH__}`)
-
-  
 
   //判断是否是自选
   // if(Array.isArray(select)){
@@ -129,9 +154,9 @@ async function doit (answer, name) {
   // }
 
   // webpack.getWebpackConfig(select,path.join(__TEMPLATE_PATH__, '/build/'),path.join(__PATH__, '/build/'))
-  
+
   //安装npm包
-  
+
   // utils.install(__PATH__,[...dependencies,...devDependencies]).then(()=>{
   //   let pkgDependencies={}
   //   dependencies.forEach(pkg=>pkgDependencies[pkg]=utils.checkPackageRange(pkg))
@@ -142,79 +167,70 @@ async function doit (answer, name) {
   //   // //输出package.json
   //   // fs.writeFileSync(
   //   //   path.join(__PATH__, 'package.json'),
-      
+
   //   //   JSON.stringify(pkg, null, 2)
   //   // );
 
   // })
-  shell.exit(1);
+  shell.exit(1)
 }
 
 //设置xflow
-const installXflow=(root,flag)=>{
-
-  fs.readFile(root,function(error,data){    //读取文件，回调函数第一个参数表示错误信息，第二个参数为读取的文本内容
-      if(error){
-          console.log(error);
-          shell.exit(1)
-      }
-      let _html = data.toString()
-      if(flag){
-        _html=_html.replace("<%=xflow%>","<script src='https://xflow-test1.zhongan.io/static/sdk/lastest/visual_ilog.min.js?id=id'></script>")
-      }else{
-        _html=_html.replace("<%=xflow%>","")
-      }
-      fs.writeFileSync(root,_html);
+const installXflow = (root, flag, siteid) => {
+  fs.readFile(root, function(error, data) {
+    //读取文件，回调函数第一个参数表示错误信息，第二个参数为读取的文本内容
+    if (error) {
+      console.log(error)
+      shell.exit(1)
+    }
+    let _html = data.toString()
+    if (flag) {
+      _html = _html.replace(
+        '<%=xflow%>',
+        `<script src='https://xflow-test1.zhongan.io/static/sdk/lastest/visual_ilog.min.js?id=${siteid}'></script>`
+      )
+    } else {
+      _html = _html.replace('<%=xflow%>', '')
+    }
+    fs.writeFileSync(root, _html)
   })
-  
 }
 
 const create = (promptList, dir) => {
-  inquirer.prompt(promptList).then((answers) => {
+  inquirer.prompt(promptList).then(answers => {
     if (!shell.which('git')) {
-      shell.echo('Sorry, this script requires git');
-      shell.exit(1);
+      shell.echo('Sorry, this script requires git')
+      shell.exit(1)
     }
     doit(answers, dir)
   })
 }
 
-const checkDir = (dirPath) => {
+const checkDir = dirPath => {
   try {
     fs.accessSync(dirPath)
     console.error(chalk.red(`${icon.wow} 该项目已存在`))
   } catch (error) {
-    return true 
+    return true
   }
 }
 
 // 获取版本
-program
-  .version(pk.version)
+program.version(pk.version)
 
-program
-  .command('create <project>')
-  .action((dir, otherDirs) => {
-    const result = checkDir(`${process.cwd()}/${dir}`)
-    if (result) {
-      create([
-        step.first,
-        step.mft,
-        step.vue1,
-        step.vue2,
-        step.react1,
-        step.react2
-      ], 
-      process.argv[3])
-    }
-  })
+program.command('create <project>').action((dir, otherDirs) => {
+  const result = checkDir(`${process.cwd()}/${dir}`)
+  if (result) {
+    create([step.first, step.projectDefault, step.xflowCode], process.argv[3])
+  }
+})
 
 // 获取 help
-program.on('--help', function(){
-    console.log('')
-    console.log('Examples:');
-    console.log('  $ custom-help --help');
-    console.log('  $ custom-help -h');
-  })
+program.on('--help', function() {
+  console.log('')
+  console.log('Examples:')
+  console.log('  $ custom-help --help')
+  console.log('  $ custom-help -h')
+})
 
 program.parse(process.argv)

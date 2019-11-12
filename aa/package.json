@@ -1,0 +1,78 @@
+{
+  "name": "fragment-vue-master",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve --host localhost --port 9099",
+    "build": "vue-cli-service build",
+    "rebuild": "vue-cli-service build --mode mft",
+    "lint": "vue-cli-service lint",
+    "app": "nodemon fragments.js",
+    "run:app": "yarn run rebuild && yarn run app",
+    "lint:report": "eslint --ext .jsx,.js src -f checkstyle -o report_zacc_eslint_js.xml; exit 0"
+  },
+  "dependencies": {
+    "core-js": "^2.6.9",
+    "cross-env": "^6.0.0",
+    "easy-mft": "^1.0.0",
+    "html-entry": "^1.0.3",
+    "vue": "^2.6.10",
+    "vue-datepicker": "^1.3.0",
+    "vue-router": "^3.1.3"
+  },
+  "devDependencies": {
+    "@koa/cors": "^2.2.3",
+    "@vue/cli-plugin-babel": "^3.11.0",
+    "@vue/cli-plugin-eslint": "^3.11.0",
+    "@vue/cli-service": "^3.11.0",
+    "add-asset-html-webpack-plugin": "^3.1.3",
+    "babel-eslint": "10.0.3",
+    "compression-webpack-plugin": "^3.0.0",
+    "eslint": "6.5.1",
+    "eslint-plugin-vue": "5.2.3",
+    "koa": "^2.8.2",
+    "koa-compress": "^3.0.0",
+    "koa-static": "^5.0.0",
+    "koa-views": "^6.2.1",
+    "koa2-cors": "^2.0.6",
+    "node-sass": "^4.12.0",
+    "nodemon": "^1.19.3",
+    "postcss-import": "^12.0.1",
+    "postcss-normalize": "^8.0.1",
+    "postcss-selector-namespace": "^3.0.1",
+    "sass-loader": "^8.0.0",
+    "vue-template-compiler": "^2.6.10",
+    "eslint-config-za": "2.1.0",
+    "@typescript-eslint/eslint-plugin": "2.5.0",
+    "@typescript-eslint/parser": "2.5.0",
+    "eslint-plugin-babel": "5.3.0",
+    "eslint-plugin-import": "2.18.2",
+    "eslint-plugin-jsx-a11y": "6.2.3",
+    "eslint-plugin-react": "7.16.0",
+    "eslint-plugin-react-hooks": "2.2.0",
+    "typescript": "3.6.4"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
+}
