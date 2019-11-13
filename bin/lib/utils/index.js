@@ -1,6 +1,7 @@
 const ora = require('ora')
 const execa = require('execa')
 const chalk = require('chalk')
+const dir = require('./dir')
 
 const checkDir = (dirPath) => {
     try {
@@ -20,24 +21,6 @@ async function npminstall (dir, command) {
       }).catch(e => {
         reject(e)
       })
-      // const subprocess = execa('npm',options,{
-      //   cwd: dir + '/',
-      //   stdio: ['inherit']
-      // });
-      // subprocess.on('close', code => {
-      //   if (code !== 0) {
-      //     spinner.text = 'init error'
-      //     reject(`command failed: ${command}`)
-      //     return
-      //   }
-      //   console.timeEnd()
-      //   subprocess.kill('SIGTERM', {
-      //     forceKillAfterTimeout: 1000
-      //   })
-      //   spinner.text = 'init success'
-      //   spinner.succeed()
-      //   resolve('success')
-      // })
     })
   }
 
@@ -55,26 +38,6 @@ async function init (dir) {
         }).catch(e => {
           reject(e)
         })
-        // const subprocess = execa('npx',['easy', 'init'],{
-        //     cwd: dir + '/',
-        //     stdio: ['inherit']
-        // })
-        // subprocess.on('close', code => {
-        //     if (code !== 0) {
-        //         spinner.text = `init error ${code}`
-        //         spinner.succeed()
-        //         subprocess.kill('SIGTERM', {
-        //             forceKillAfterTimeout: 1000
-        //         })
-        //         reject(`command failed: easy init`)
-        //     }
-        //     subprocess.kill('SIGTERM', {
-        //         forceKillAfterTimeout: 1000
-        //     })
-        //     spinner.text = 'init done'
-        //     spinner.succeed()
-        //     resolve('success')
-        // })
     })
 }
 module.exports = {
