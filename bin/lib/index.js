@@ -12,6 +12,7 @@ const ejs = require('ejs')
 const fs = require('fs-extra')
 const perset = require('./perset')
 const utils = require('./utils')
+const ora = require('ora')
 
 
 async function create (promptList, dir) {
@@ -40,17 +41,21 @@ program
         if (answers.perset === 'default') {
           answers.select = answers.type === 'vue' ? perset.vue : perset.react
         }
-        
+        const spinner = new ora({
+          discardStdin: false,
+          text: 'start init...',
+        })
+        spinner.start()
         Promise.all(
           [
             ejs.renderFile(path.join(__dirname, './template/zarc.js'), { 
-              plugin: ['less', 'sass'],// answers.select,
+              plugin: ['less', 'sass', 'babel', 'images', 'eslint', 'react'],// answers.select,
               mft: answers.mft,
               type: answers.type
             }),
             ejs.renderFile(path.join(__dirname, './template/package.json'), { 
               name: dir,
-              plugin: ['less', 'sass'], // answers.select
+              plugin: ['less', 'sass', 'babel', 'images', 'eslint', 'react'], // answers.select
             })
           ]
         ).then((res) => {
@@ -62,15 +67,35 @@ program
             `${process.cwd()}/${dir}/package.json`,
             res[1]
           )
-          // npm install
-          utils.install(`${process.cwd()}/${dir}`).then((success) => {
-            // eyweb init
-            utils.init(`${process.cwd()}/${dir}`).catch(err => {
+          console.time(' timed: ')
+          // 获取安装模块
+          utils.install(`${process.cwd()}/${dir}`).then(success=>{
+            console.timeEnd(' timed: ')
+            console.time(' timed: ')
+            // 获取成功，拉取模版
+            spinner.text = 'create template...'
+            utils.init(`${process.cwd()}/${dir}`).then(suc => {
+              spinner.text = 'install '
+              console.timeEnd(' timed: ')
+              console.time(' timed: ')
+
+              utils.install(`${process.cwd()}/${dir}`).then(
+                su => {
+                  console.timeEnd(' timed: ')
+                  spinner.text = 'install success'
+                  spinner.succeed()
+              }, er => {
+                console.log(er)
+              })
+              
+            }, err => {
+              console.log('create template error')
               console.log(err)
             })
-
-          }, (fail) => {
-            console.log(fail)
+            
+          }, error=> {
+            console.log('install template error')
+            console.log(error)
           })
         })
       })

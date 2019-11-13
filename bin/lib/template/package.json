@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "main": "index.js",
     "scripts": {
+      "dev": "easy dev",
       "doit": "easy init",
       "test": "echo \"Error: no test specified\" && exit 1"
     },
@@ -12,11 +13,11 @@
     "dependencies": {
     },
     "devDependencies": {
-        "easy-client": "^1.0.0",
+        "easy-client": "^1.0.23",
         <% for (var i=0; i<plugin.length; i ++) {if (i === (plugin.length - 1)) {-%>
-"easy-plugins-<%=plugin[i]-%>": "^1.0.0"
+"easy-plugins-<%=plugin[i]-%>": "^1.0.30"
         <% } else { -%>
-"easy-plugins-<%=plugin[i]-%>": "^1.0.0",
+"easy-plugins-<%=plugin[i]-%>": "^1.0.30",
 <% }}-%>
     },
     "description": ""

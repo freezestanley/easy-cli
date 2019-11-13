@@ -7,7 +7,7 @@
     "za-cli": "./bin/index.js"
   },
   "scripts": {
-    "doit": "eyweb -V",
+    "doit": "easy -V",
     "publish": "relix --patch",
     "lint:report": "eslint --ext .jsx,.js src -f checkstyle -o report_zacc_eslint_js.xml; exit 0"
   },
