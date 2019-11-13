@@ -13,7 +13,7 @@ const checkDir = (dirPath) => {
   }
 async function npminstall (dir, command) {
     return await new Promise((resolve, reject) => {
-      execa("yarn",[], {
+      execa("npm",["i"], {
           cwd: dir + '/',
           stdio: ['inherit']
       }).then(result => {
