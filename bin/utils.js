@@ -11,7 +11,8 @@ const spinner = ora('正在下载模板…')
 async function npmInstall(targetDir, command) {
   const npmSpinner = ora('开始安装NPM包…')
   return await new Promise((resolve, reject) => {
-    const options = command == 'npm' ? ['install', '--loglevel', 'error'] : ['add']
+    const options =
+      command == 'npm' ? ['install', '--loglevel', 'error', `--registry='https://registry.npm.taobao.org'`] : ['add']
     const child = execa(command, options, {
       cwd: targetDir + '/',
       stdio: ['inherit']

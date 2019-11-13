@@ -39,9 +39,9 @@ async function doit(answer, name) {
   //react 模板
   if (type == 'react') template = 'fragment-react-master'
   //zarm模板
-  if (type == 'react' && select.indexOf('zarm')) template = 'fragment-react-zarm'
+  if (type == 'react' && select.includes('zarm')) template = 'fragment-react-zarm'
   //zarm vue模板
-  if (type == 'vue' && select.indexOf('zarm')) template = 'fragment-react-zarm'
+  if (type == 'vue' && select.includes('zarm')) template = 'fragment-vue-zarm'
 
   const __PATH__ = `${process.cwd()}/${name}` //目标路径
   const __TEMPLATE_PATH__ = path.resolve(__dirname, `../packages/${template}/`)
