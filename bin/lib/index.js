@@ -48,7 +48,7 @@ program
         spinner.start()
         Promise.all(
           [
-            ejs.renderFile(path.join(__dirname, './template/zarc.js'), { 
+            ejs.renderFile(path.join(__dirname, './template/easyrc.js'), { 
               plugin: ['less', 'sass', 'babel', 'images', 'eslint', 'react'],// answers.select,
               mft: answers.mft,
               type: answers.type
@@ -60,7 +60,7 @@ program
           ]
         ).then((res) => {
           fs.writeFileSync(
-            `${process.cwd()}/${dir}/.zarc.js`,
+            `${process.cwd()}/${dir}/.easyrc.js`,
             res[0]
           )
           fs.writeFileSync(
