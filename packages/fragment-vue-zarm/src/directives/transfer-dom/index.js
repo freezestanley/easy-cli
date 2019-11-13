@@ -6,7 +6,7 @@ const objectAssign = require('object-assign')
  * @param {(Node|string|Boolean)} [node=document.body] DOM Node, CSS selector, or Boolean
  * @return {Node} The target that the el will be appended to
  */
-function getTarget (node) {
+function getTarget(node) {
   if (node === void 0) {
     return document.body
   }
@@ -24,7 +24,7 @@ function getTarget (node) {
   return node instanceof window.Node ? node : document.querySelector(node)
 }
 
-function getShouldUpdate (node) {
+function getShouldUpdate(node) {
   // do not updated by default
   if (!node) {
     return false
@@ -41,7 +41,7 @@ function getShouldUpdate (node) {
 }
 
 const directive = {
-  inserted (el, { value }) {
+  inserted(el, { value }) {
     el.className = el.className ? el.className + ' v-transfer-dom' : 'v-transfer-dom'
     const parentNode = el.parentNode
     var home = document.createComment('')
@@ -61,7 +61,7 @@ const directive = {
       }
     }
   },
-  componentUpdated (el, { value }) {
+  componentUpdated(el, { value }) {
     const shouldUpdate = getShouldUpdate(value)
     if (!shouldUpdate) {
       return
@@ -88,7 +88,7 @@ const directive = {
       getTarget(value).appendChild(el)
     }
   },
-  unbind: function unbind (el) {
+  unbind: function unbind(el) {
     el.className = el.className.replace('v-transfer-dom', '')
     if (el.__transferDomData && el.__transferDomData.hasMovedOut === true) {
       el.__transferDomData.parentNode && el.__transferDomData.parentNode.appendChild(el)
