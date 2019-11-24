@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "main": "index.js",
     "scripts": {
+      "build": "easy build",
       "dev": "easy dev",
       "doit": "easy init",
       "test": "echo \"Error: no test specified\" && exit 1"
